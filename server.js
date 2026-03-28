@@ -40,6 +40,35 @@ const server = http.createServer((req, res) => {
     });
 
     proxyReq.end();
+  } else if (req.url.startsWith('/api/player/') && req.method === 'GET') {
+    // Récupérer le playerTag depuis l'URL
+    const playerTag = req.url.replace('/api/player/', '');
+    const https = require('https');
+
+    const options = {
+      hostname: 'api.brawlstars.com',
+      port: 443,
+      path: `/v1/players/${playerTag}`,
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+
+    console.log(`📍 Recherche du joueur: ${playerTag}`);
+
+    const proxyReq = https.request(options, (proxyRes) => {
+      res.writeHead(proxyRes.statusCode, proxyRes.headers);
+      proxyRes.pipe(res);
+    });
+
+    proxyReq.on('error', (error) => {
+      console.error('❌ Erreur proxy:', error);
+      res.writeHead(500);
+      res.end(JSON.stringify({ error: error.message }));
+    });
+
+    proxyReq.end();
   } else {
     res.writeHead(404);
     res.end('Not Found');
