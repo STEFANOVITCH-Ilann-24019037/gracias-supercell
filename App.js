@@ -3,34 +3,53 @@ import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput 
 import { useState } from 'react';
 import { styles } from './styles';
 
-// URL du proxy backend local
-const API_BASE = 'http://localhost:3000';
+// Importer les données JSON locales
+import apiBrawlers from './data/api/apibrawlers.json';
+import apiPlayer1 from './data/api/apipalyer1.json';
+import apiPlayer2 from './data/api/apiplayer2.json';
+
+/**
+ * Charge un joueur depuis les fichiers JSON locaux selon son tag
+ */
+const loadPlayerFromJSON = (playerTag) => {
+  const tag = playerTag.replace('#', '').toLowerCase();
+
+  // Vérifier le tag et retourner le joueur correspondant
+  if (tag.includes('qlvp829r')) {
+    return apiPlayer1;
+  } else if (tag.includes('vu02ggjq')) {
+    return apiPlayer2;
+  }
+
+  // Sinon, vérifier les anciens tags de test
+  if (tag.includes('player1') || tag.includes('82rgu8pr')) {
+    return apiPlayer1;
+  } else if (tag.includes('player2') || tag.includes('8lq9jr82')) {
+    return apiPlayer2;
+  }
+
+  return null;
+};
 
 export default function App() {
   const [loading, setLoading] = useState(false);
   const [brawlers, setBrawlers] = useState([]);
   const [playerTag, setPlayerTag] = useState('');
   const [playerData, setPlayerData] = useState(null);
-  const [activeTab, setActiveTab] = useState('brawlers'); // 'brawlers' ou 'player'
+  const [activeTab, setActiveTab] = useState('brawlers'); // 'brawlers', 'player' ou 'versus'
+  const [versusPlayer1Tag, setVersusPlayer1Tag] = useState('');
+  const [versusPlayer2Tag, setVersusPlayer2Tag] = useState('');
+  const [versusPlayer1, setVersusPlayer1] = useState(null);
+  const [versusPlayer2, setVersusPlayer2] = useState(null);
 
   const fetchBrawlers = async () => {
     setLoading(true);
     setActiveTab('brawlers');
-    const url = `${API_BASE}/api/brawlers`;
-    console.log('URL:', url);
 
     try {
-      const response = await fetch(url);
-
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Erreur:', errorText);
-        throw new Error(`API Error: ${response.status}`);
-      }
-
-      const data = await response.json();
-      console.log('Brawlers reçus:', data.items?.length || 0);
-      setBrawlers(data.items || []);
+      // Charger les données des brawlers depuis le JSON local
+      console.log('Brawlers chargés:', apiBrawlers.items?.length || 0);
+      setBrawlers(apiBrawlers.items || []);
     } catch (error) {
       console.error('Erreur:', error.message);
       alert('Erreur: ' + error.message);
@@ -47,22 +66,56 @@ export default function App() {
 
     setLoading(true);
     setActiveTab('player');
-    const encodedTag = encodeURIComponent(playerTag);
-    const url = `${API_BASE}/api/player/${encodedTag}`;
-    console.log('URL:', url);
 
     try {
-      const response = await fetch(url);
+      // Charger le joueur depuis les fichiers JSON
+      const playerData = loadPlayerFromJSON(playerTag);
 
-      if (!response.ok) {
-        const errorText = await response.text();
-        console.error('Erreur:', errorText);
-        throw new Error(`API Error: ${response.status}`);
+      if (!playerData) {
+        alert('Joueur introuvable. Tags valides: #QLVP829R ou #VU02GGJQ');
+        setLoading(false);
+        return;
       }
 
-      const data = await response.json();
-      console.log('Joueur reçu:', data);
-      setPlayerData(data);
+      console.log('Joueur chargé:', playerData.name);
+      setPlayerData(playerData);
+    } catch (error) {
+      console.error('Erreur:', error.message);
+      alert('Erreur: ' + error.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchVersus = async () => {
+    if (!versusPlayer1Tag.trim() || !versusPlayer2Tag.trim()) {
+      alert('Veuillez entrer les hashtags des deux joueurs');
+      return;
+    }
+
+    setLoading(true);
+    setActiveTab('versus');
+
+    try {
+      // Charger les deux joueurs depuis les fichiers JSON
+      const player1 = loadPlayerFromJSON(versusPlayer1Tag);
+      const player2 = loadPlayerFromJSON(versusPlayer2Tag);
+
+      if (!player1 || !player2) {
+        alert('Un ou plusieurs joueurs introuvables. Tags valides: #QLVP829R ou #VU02GGJQ');
+        setLoading(false);
+        return;
+      }
+
+      if (player1.tag === player2.tag) {
+        alert('Veuillez sélectionner deux joueurs différents');
+        setLoading(false);
+        return;
+      }
+
+      setVersusPlayer1(player1);
+      setVersusPlayer2(player2);
+      console.log('Versus chargé:', player1.name, 'vs', player2.name);
     } catch (error) {
       console.error('Erreur:', error.message);
       alert('Erreur: ' + error.message);
@@ -212,6 +265,104 @@ export default function App() {
     );
   };
 
+  const renderVersusComparison = () => {
+    if (!versusPlayer1 || !versusPlayer2) return null;
+
+    const stats1 = {
+      trophies: versusPlayer1.trophies || 0,
+      maxTrophies: versusPlayer1.highestTrophies || 0,
+      level: versusPlayer1.expLevel || 0,
+      brawlers: versusPlayer1.brawlers?.length || 0,
+      prestigeTotal: versusPlayer1.totalPrestigeLevel || 0,
+      victories3v3: versusPlayer1['3vs3Victories'] || 0,
+      victorieSolo: versusPlayer1.soloVictories || 0,
+      victorieDuo: versusPlayer1.duoVictories || 0,
+    };
+
+    const stats2 = {
+      trophies: versusPlayer2.trophies || 0,
+      maxTrophies: versusPlayer2.highestTrophies || 0,
+      level: versusPlayer2.expLevel || 0,
+      brawlers: versusPlayer2.brawlers?.length || 0,
+      prestigeTotal: versusPlayer2.totalPrestigeLevel || 0,
+      victories3v3: versusPlayer2['3vs3Victories'] || 0,
+      victorieSolo: versusPlayer2.soloVictories || 0,
+      victorieDuo: versusPlayer2.duoVictories || 0,
+    };
+
+    const ComparisonStat = ({ label, stat1, stat2 }) => {
+      const winner = stat1 > stat2 ? 1 : stat2 > stat1 ? 2 : 0;
+      return (
+        <View style={styles.comparisonStat}>
+          <View style={[styles.statColumn, winner === 1 && { backgroundColor: '#4CAF50' }]}>
+            <Text style={styles.comparisonValue}>{stat1}</Text>
+          </View>
+          <Text style={styles.comparisonLabel}>{label}</Text>
+          <View style={[styles.statColumn, winner === 2 && { backgroundColor: '#4CAF50' }]}>
+            <Text style={styles.comparisonValue}>{stat2}</Text>
+          </View>
+        </View>
+      );
+    };
+
+    return (
+      <ScrollView style={styles.versusScroll}>
+        <View style={styles.versusContainer}>
+          {/* Headers */}
+          <View style={styles.versusHeaderRow}>
+            <View style={styles.versusPlayerHeader}>
+              <Text style={styles.versusPlayerName}>{versusPlayer1.name}</Text>
+              <Text style={styles.versusPlayerTag}>{versusPlayer1.tag}</Text>
+            </View>
+            <Text style={styles.versusVsText}>VS</Text>
+            <View style={styles.versusPlayerHeader}>
+              <Text style={styles.versusPlayerName}>{versusPlayer2.name}</Text>
+              <Text style={styles.versusPlayerTag}>{versusPlayer2.tag}</Text>
+            </View>
+          </View>
+
+          {/* Comparaison des statistiques */}
+          <View style={styles.comparisonSection}>
+            <Text style={styles.sectionTitle}>Comparaison</Text>
+            <ComparisonStat label="Trophées" stat1={stats1.trophies} stat2={stats2.trophies} />
+            <ComparisonStat label="Max Trophées" stat1={stats1.maxTrophies} stat2={stats2.maxTrophies} />
+            <ComparisonStat label="Niveau" stat1={stats1.level} stat2={stats2.level} />
+            <ComparisonStat label="Brawlers" stat1={stats1.brawlers} stat2={stats2.brawlers} />
+            <ComparisonStat label="Prestige Total" stat1={stats1.prestigeTotal} stat2={stats2.prestigeTotal} />
+            <ComparisonStat label="Victoires 3v3" stat1={stats1.victories3v3} stat2={stats2.victories3v3} />
+            <ComparisonStat label="Victoires Solo" stat1={stats1.victorieSolo} stat2={stats2.victorieSolo} />
+            <ComparisonStat label="Victoires Duo" stat1={stats1.victorieDuo} stat2={stats2.victorieDuo} />
+          </View>
+
+          {/* Brawlers comparaison */}
+          <View style={styles.comparisonSection}>
+            <Text style={styles.sectionTitle}>Top Brawlers</Text>
+            <View style={styles.brawlerComparisonRow}>
+              <View style={styles.brawlerComparisonColumn}>
+                <Text style={{ fontWeight: 'bold', marginBottom: 8, textAlign: 'center' }}>{versusPlayer1.name}</Text>
+                {versusPlayer1.brawlers?.slice(0, 5).map((brawler, idx) => (
+                  <View key={idx} style={styles.comparisonBrawlerItem}>
+                    <Text style={styles.comparisonBrawlerName}>{brawler.name}</Text>
+                    <Text style={styles.comparisonBrawlerStats}>{brawler.trophies} tr. • Lvl {brawler.power}</Text>
+                  </View>
+                ))}
+              </View>
+              <View style={styles.brawlerComparisonColumn}>
+                <Text style={{ fontWeight: 'bold', marginBottom: 8, textAlign: 'center' }}>{versusPlayer2.name}</Text>
+                {versusPlayer2.brawlers?.slice(0, 5).map((brawler, idx) => (
+                  <View key={idx} style={styles.comparisonBrawlerItem}>
+                    <Text style={styles.comparisonBrawlerName}>{brawler.name}</Text>
+                    <Text style={styles.comparisonBrawlerStats}>{brawler.trophies} tr. • Lvl {brawler.power}</Text>
+                  </View>
+                ))}
+              </View>
+            </View>
+          </View>
+        </View>
+      </ScrollView>
+    );
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -229,6 +380,11 @@ export default function App() {
           title="Joueur"
           onPress={() => setActiveTab('player')}
           color={activeTab === 'player' ? '#FF6B35' : '#666'}
+        />
+        <Button
+          title="Versus"
+          onPress={() => setActiveTab('versus')}
+          color={activeTab === 'versus' ? '#FF6B35' : '#666'}
         />
       </View>
 
@@ -307,6 +463,57 @@ export default function App() {
           {!playerData && !loading && (
             <View style={styles.emptyContainer}>
               <Text style={styles.emptyText}>Entrez un hashtag et recherchez un joueur</Text>
+            </View>
+          )}
+        </View>
+      )}
+
+      {/* Contenu Versus */}
+      {activeTab === 'versus' && (
+        <View style={styles.tabContent}>
+          <View style={styles.versusInputContainer}>
+            <View style={styles.versusInputGroup}>
+              <Text style={styles.versusInputLabel}>Joueur 1</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Hashtag joueur 1"
+                placeholderTextColor="#888"
+                value={versusPlayer1Tag}
+                onChangeText={setVersusPlayer1Tag}
+              />
+            </View>
+
+            <View style={styles.versusInputGroup}>
+              <Text style={styles.versusInputLabel}>Joueur 2</Text>
+              <TextInput
+                style={styles.input}
+                placeholder="Hashtag joueur 2"
+                placeholderTextColor="#888"
+                value={versusPlayer2Tag}
+                onChangeText={setVersusPlayer2Tag}
+              />
+            </View>
+
+            <Button
+              title={loading ? "Chargement..." : "Comparer"}
+              onPress={fetchVersus}
+              disabled={loading}
+              color="#FF6B35"
+            />
+          </View>
+
+          {loading && activeTab === 'versus' && (
+            <View style={styles.loadingContainer}>
+              <ActivityIndicator size="large" color="#FF6B35" />
+              <Text style={styles.loadingText}>Chargement de la comparaison...</Text>
+            </View>
+          )}
+
+          {versusPlayer1 && versusPlayer2 && !loading && renderVersusComparison()}
+
+          {!versusPlayer1 && !versusPlayer2 && !loading && (
+            <View style={styles.emptyContainer}>
+              <Text style={styles.emptyText}>Entrez les hashtags et appuyez sur Comparer</Text>
             </View>
           )}
         </View>
