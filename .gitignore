@@ -2,6 +2,10 @@
 
 # dependencies
 node_modules/
+/idea/
+.vscode/
+*.sublime-workspace
+*.sublime-project
 
 # Expo
 .expo/
