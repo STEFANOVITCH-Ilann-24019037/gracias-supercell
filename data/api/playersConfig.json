@@ -1,0 +1,23 @@
+{
+  "players": [
+    {
+      "tag": "QLVP829R",
+      "filename": "apiQLVP829Rplayer.json"
+    },
+    {
+      "tag": "VU02GGJQ",
+      "filename": "apiVU02GGJQplayer.json"
+    },
+    {
+      "tag": "RQPOQOQ",
+      "filename": "apiRQPOQOQplayer.json"
+    },
+    {
+      "tag": "2PVJU20JQ",
+      "filename": "api2PVJU20JQplayer.json"
+    },{
+      "tag" : "2UVJJPQLGP",
+        "filename": "api2UVJJPQLGPplayer.json"
+    }
+  ]
+}
