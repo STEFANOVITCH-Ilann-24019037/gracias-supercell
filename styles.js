@@ -255,4 +255,118 @@ export const styles = StyleSheet.create({
     fontSize: 12,
     color: '#ddd',
   },
+  // Styles Versus
+  versusInputContainer: {
+    paddingHorizontal: 15,
+    paddingVertical: 12,
+    backgroundColor: '#2d2d44',
+    gap: 12,
+  },
+  versusInputGroup: {
+    gap: 6,
+  },
+  versusInputLabel: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#FF6B35',
+    paddingHorizontal: 2,
+  },
+  versusScroll: {
+    flex: 1,
+  },
+  versusContainer: {
+    padding: 15,
+  },
+  versusHeaderRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 20,
+    paddingHorizontal: 10,
+  },
+  versusPlayerHeader: {
+    flex: 1,
+    alignItems: 'center',
+    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+    padding: 12,
+    borderRadius: 8,
+  },
+  versusPlayerName: {
+    fontSize: 16,
+    fontWeight: 'bold',
+    color: '#FF6B35',
+  },
+  versusPlayerTag: {
+    fontSize: 12,
+    color: '#888',
+    marginTop: 4,
+  },
+  versusVsText: {
+    fontSize: 20,
+    fontWeight: 'bold',
+    color: '#FF6B35',
+    marginHorizontal: 15,
+  },
+  comparisonSection: {
+    marginBottom: 20,
+    backgroundColor: '#2d2d44',
+    borderRadius: 12,
+    padding: 15,
+    borderLeftWidth: 4,
+    borderLeftColor: '#FF6B35',
+  },
+  comparisonStat: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginVertical: 10,
+    backgroundColor: 'rgba(255, 107, 53, 0.05)',
+    borderRadius: 8,
+    padding: 10,
+  },
+  statColumn: {
+    flex: 1,
+    alignItems: 'center',
+    padding: 10,
+    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+    borderRadius: 6,
+  },
+  comparisonValue: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: '#FF6B35',
+  },
+  comparisonLabel: {
+    flex: 1,
+    textAlign: 'center',
+    color: '#ddd',
+    fontSize: 12,
+    marginHorizontal: 10,
+  },
+  brawlerComparisonRow: {
+    flexDirection: 'row',
+    gap: 15,
+    marginTop: 10,
+  },
+  brawlerComparisonColumn: {
+    flex: 1,
+    backgroundColor: 'rgba(255, 107, 53, 0.05)',
+    borderRadius: 8,
+    padding: 10,
+  },
+  comparisonBrawlerItem: {
+    backgroundColor: 'rgba(255, 107, 53, 0.1)',
+    padding: 8,
+    borderRadius: 6,
+    marginVertical: 6,
+  },
+  comparisonBrawlerName: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: '#FF6B35',
+  },
+  comparisonBrawlerStats: {
+    fontSize: 10,
+    color: '#888',
+    marginTop: 4,
+  },
 });

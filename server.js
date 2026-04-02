@@ -1,16 +1,15 @@
 const http = require('http');
+const fs = require('fs');
+const path = require('path');
 require('dotenv').config(); // Charger les variables d'environnement depuis .env
 
-const token = process.env.BEARER_TOKEN;
+// Charger les données JSON locales
+const apiClub1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/api/apiclub1.json'), 'utf8'));
+const apiClub2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/api/apiclub2.json'), 'utf8'));
+const apiPlayer1 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/api/apipalyer1.json'), 'utf8'));
+const apiPlayer2 = JSON.parse(fs.readFileSync(path.join(__dirname, 'data/api/apiplayer2.json'), 'utf8'));
 
-// Vérifier que le token est défini
-if (!token) {
-  console.error('❌ ERREUR: BEARER_TOKEN n\'est pas défini!');
-  console.error('Assurez-vous que:');
-  console.error('1. Le fichier .env existe avec BEARER_TOKEN');
-  console.error('2. Ou que la variable d\'environnement BEARER_TOKEN est définie');
-  process.exit(1);
-}
+console.log('✅ Fichiers JSON chargés avec succès');
 
 const server = http.createServer((req, res) => {
   // Activer CORS
@@ -25,61 +24,34 @@ const server = http.createServer((req, res) => {
   }
 
   if (req.url === '/api/brawlers' && req.method === 'GET') {
-    // Proxy vers l'API Brawl Stars
-    const https = require('https');
-
-    const options = {
-      family: 4,
-      hostname: 'api.brawlstars.com',
-      port: 443,
-      path: '/v1/brawlers',
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
-
-    const proxyReq = https.request(options, (proxyRes) => {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      proxyRes.pipe(res);
-    });
-
-    proxyReq.on('error', (error) => {
-      console.error('❌ Erreur proxy:', error);
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: error.message }));
-    });
-
-    proxyReq.end();
+    // Retourner les données du club 1 locales
+    console.log('📦 Retour des données du club 1');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(apiClub1));
+  } else if (req.url === '/api/club2' && req.method === 'GET') {
+    // Retourner les données du club 2 locales
+    console.log('📦 Retour des données du club 2');
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(apiClub2));
   } else if (req.url.startsWith('/api/player/') && req.method === 'GET') {
     // Récupérer le playerTag depuis l'URL
-    const playerTag = req.url.replace('/api/player/', '');
-    const https = require('https');
+    const playerTag = req.url.replace('/api/player/', '').toLowerCase();
+    console.log('🎮 Recherche du joueur: ' + playerTag);
 
-    const options = {
-      hostname: 'api.brawlstars.com',
-      port: 443,
-      path: `/v1/players/${playerTag}`,
-      method: 'GET',
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
+    let responseData = null;
 
-    console.log('Recherche du joueur: ' + playerTag);
+    // Déterminer quel fichier retourner basé sur le playerTag
+    if (playerTag.includes('player1') || playerTag.includes('82rgu8pr')) {
+      responseData = apiPlayer1;
+    } else if (playerTag.includes('player2') || playerTag.includes('8lq9jr82')) {
+      responseData = apiPlayer2;
+    } else {
+      // Par défaut retourner le joueur 1
+      responseData = apiPlayer1;
+    }
 
-    const proxyReq = https.request(options, (proxyRes) => {
-      res.writeHead(proxyRes.statusCode, proxyRes.headers);
-      proxyRes.pipe(res);
-    });
-
-    proxyReq.on('error', (error) => {
-      console.error('Erreur proxy:', error);
-      res.writeHead(500);
-      res.end(JSON.stringify({ error: error.message }));
-    });
-
-    proxyReq.end();
+    res.writeHead(200, { 'Content-Type': 'application/json' });
+    res.end(JSON.stringify(responseData));
   } else {
     res.writeHead(404);
     res.end('Not Found');
