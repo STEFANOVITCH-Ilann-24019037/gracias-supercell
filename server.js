@@ -1,7 +1,18 @@
 const http = require('http');
+require('dotenv').config(); // Charger les variables d'environnement depuis .env
 
-const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6Ijg2Y2I1NzRhLWMzOGMtNDYxOS1iMzc3LTgwMzJmODhmMTBkMyIsImlhdCI6MTc3NTExMjg2OSwic3ViIjoiZGV2ZWxvcGVyL2FjMGVmMjhmLWFjYzYtMDUyMC1mY2JmLWJlNzQ4ZjdkM2MwOCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiMTg1LjMxLjQwLjMwIiwiMTg1LjMxLjQxLjg1Il0sInR5cGUiOiJjbGllbnQifV19.hu8ccbyvPKfaCksA9nFEKs4Df7hoIdzvrvdWvItuE0Bud0AHsvOnCqHy9lBMu65ZcNZLuwQdhMIjaGskCQPhmg" ;
-    const server = http.createServer((req, res) => {
+const token = process.env.BEARER_TOKEN;
+
+// Vérifier que le token est défini
+if (!token) {
+  console.error('❌ ERREUR: BEARER_TOKEN n\'est pas défini!');
+  console.error('Assurez-vous que:');
+  console.error('1. Le fichier .env existe avec BEARER_TOKEN');
+  console.error('2. Ou que la variable d\'environnement BEARER_TOKEN est définie');
+  process.exit(1);
+}
+
+const server = http.createServer((req, res) => {
   // Activer CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -75,8 +86,10 @@ const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtY
   }
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log('Proxy server lancé sur http://localhost:' + PORT);
-  console.log('Endpoint: http://localhost:' + PORT + '/api/brawlers');
+  console.log(`✅ Proxy server lancé sur http://localhost:${PORT}`);
+  console.log(`📍 Endpoint: http://localhost:${PORT}/api/brawlers`);
+  console.log(`🎮 Brawlers API: http://localhost:${PORT}/api/brawlers`);
+  console.log(`👤 Player API: http://localhost:${PORT}/api/player/<TAG>`);
 });
