@@ -75,7 +75,7 @@ const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtY
   }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT;
 server.listen(PORT, () => {
   console.log('Proxy server lancé sur http://localhost:' + PORT);
   console.log('Endpoint: http://localhost:' + PORT + '/api/brawlers');
