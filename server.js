@@ -1,6 +1,17 @@
 const http = require('http');
+require('dotenv').config(); // Charger les variables d'environnement depuis .env
 
-const token = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiIsImtpZCI6IjI4YTMxOGY3LTAwMDAtYTFlYi03ZmExLTJjNzQzM2M2Y2NhNSJ9.eyJpc3MiOiJzdXBlcmNlbGwiLCJhdWQiOiJzdXBlcmNlbGw6Z2FtZWFwaSIsImp0aSI6ImJmYjJjOWZkLWI2MzItNGI3Ni1hYmY3LTYyNjFiNzBlMmQzMyIsImlhdCI6MTc3NDc5OTI5NSwic3ViIjoiZGV2ZWxvcGVyL2FjMGVmMjhmLWFjYzYtMDUyMC1mY2JmLWJlNzQ4ZjdkM2MwOCIsInNjb3BlcyI6WyJicmF3bHN0YXJzIl0sImxpbWl0cyI6W3sidGllciI6ImRldmVsb3Blci9zaWx2ZXIiLCJ0eXBlIjoidGhyb3R0bGluZyJ9LHsiY2lkcnMiOlsiODguMTc4LjEyNi4xNjAiXSwidHlwZSI6ImNsaWVudCJ9XX0.WnPXzE64mm-is_42e_P189OxqKTW4_HSJt9QEcJxFA5rBBbM18bprGf1g-ncXfdNDzscU58Uq8R8qMNTO9X-3A";
+const token = process.env.BEARER_TOKEN;
+
+// Vérifier que le token est défini
+if (!token) {
+  console.error('❌ ERREUR: BEARER_TOKEN n\'est pas défini!');
+  console.error('Assurez-vous que:');
+  console.error('1. Le fichier .env existe avec BEARER_TOKEN');
+  console.error('2. Ou que la variable d\'environnement BEARER_TOKEN est définie');
+  process.exit(1);
+}
+
 const server = http.createServer((req, res) => {
   // Activer CORS
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -18,6 +29,7 @@ const server = http.createServer((req, res) => {
     const https = require('https');
 
     const options = {
+      family: 4,
       hostname: 'api.brawlstars.com',
       port: 443,
       path: '/v1/brawlers',
@@ -74,8 +86,10 @@ const server = http.createServer((req, res) => {
   }
 });
 
-const PORT = 3000;
+const PORT = process.env.PORT || 8080;
 server.listen(PORT, () => {
-  console.log('Proxy server lancé sur http://localhost:' + PORT);
-  console.log('Endpoint: http://localhost:' + PORT + '/api/brawlers');
+  console.log(`✅ Proxy server lancé sur http://localhost:${PORT}`);
+  console.log(`📍 Endpoint: http://localhost:${PORT}/api/brawlers`);
+  console.log(`🎮 Brawlers API: http://localhost:${PORT}/api/brawlers`);
+  console.log(`👤 Player API: http://localhost:${PORT}/api/player/<TAG>`);
 });
