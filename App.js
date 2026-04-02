@@ -1,11 +1,14 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput } from 'react-native';
-import { useState } from 'react';
+import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
+import { useEffect, useState } from 'react';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
 
 // Importer les données JSON locales
 import apiBrawlers from './data/api/apibrawlers.json';
+
 import playersList from './data/api/playersList.js';
+
 
 /**
  * Charge un joueur depuis la liste centralisée
@@ -28,7 +31,47 @@ const loadPlayerFromJSON = (playerTag) => {
   }
 };
 
+const SESSION_USER_KEY = 'gracias-supercell.currentUser';
+
+const restoreUserSession = () => {
+  if (typeof window === 'undefined' || !window.sessionStorage) {
+    return null;
+  }
+
+  try {
+    const raw = window.sessionStorage.getItem(SESSION_USER_KEY);
+    return raw ? JSON.parse(raw) : null;
+  } catch (error) {
+    return null;
+  }
+};
+
+const persistUserSession = (user) => {
+  if (typeof window === 'undefined' || !window.sessionStorage) {
+    return;
+  }
+
+  try {
+    window.sessionStorage.setItem(SESSION_USER_KEY, JSON.stringify(user));
+  } catch (error) {
+    // Ignore storage errors to avoid blocking app usage.
+  }
+};
+
+const clearUserSession = () => {
+  if (typeof window === 'undefined' || !window.sessionStorage) {
+    return;
+  }
+
+  try {
+    window.sessionStorage.removeItem(SESSION_USER_KEY);
+  } catch (error) {
+    // Ignore storage errors to avoid blocking app usage.
+  }
+};
+
 export default function App() {
+  const [currentUser, setCurrentUser] = useState(null);
   const [loading, setLoading] = useState(false);
   const [brawlers, setBrawlers] = useState([]);
   const [playerTag, setPlayerTag] = useState('');
@@ -38,6 +81,32 @@ export default function App() {
   const [versusPlayer2Tag, setVersusPlayer2Tag] = useState('');
   const [versusPlayer1, setVersusPlayer1] = useState(null);
   const [versusPlayer2, setVersusPlayer2] = useState(null);
+
+  useEffect(() => {
+    const savedUser = restoreUserSession();
+    if (savedUser) {
+      setCurrentUser(savedUser);
+    }
+  }, []);
+
+  const handleLoginSuccess = (user) => {
+    setCurrentUser(user);
+    persistUserSession(user);
+  };
+
+  const handleLogout = () => {
+    setCurrentUser(null);
+    clearUserSession();
+  };
+
+  if (!currentUser) {
+    return (
+      <>
+        <StatusBar style="light" />
+        <LoginScreen onLoginSuccess={handleLoginSuccess} />
+      </>
+    );
+  }
 
   const fetchBrawlers = async () => {
     setLoading(true);
@@ -364,6 +433,25 @@ export default function App() {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>Brawl Stars</Text>
+        <View style={styles.userBar}>
+          <View style={styles.userIdentityCard}>
+            <View style={styles.userIconWrap}>
+              <MaterialCommunityIcons name="account-circle" size={24} color="#FF6B35" />
+            </View>
+            <View>
+              <Text style={styles.userNameText}>{currentUser.prenom || 'Utilisateur'}</Text>
+              <Text style={styles.userTagText}>{currentUser.player_tag || '-'}</Text>
+            </View>
+          </View>
+
+          <Pressable
+            style={({ pressed }) => [styles.logoutButton, pressed && styles.logoutButtonPressed]}
+            onPress={handleLogout}
+          >
+            <MaterialCommunityIcons name="logout" size={18} color="#FFFFFF" />
+            <Text style={styles.logoutButtonText}>Logout</Text>
+          </Pressable>
+        </View>
       </View>
 
       {/* Onglets */}
