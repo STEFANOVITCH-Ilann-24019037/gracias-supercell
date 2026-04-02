@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "nom": "Helali",
+    "prenom": "Membre1",
+    "email": "helali@supercell.com",
+    "password": "password123",
+    "player_tag": "#2PP0Q0"
+  },
+  {
+    "id": 2,
+    "nom": "Koliai",
+    "prenom": "Membre2",
+    "email": "koliai@supercell.com",
+    "password": "password123",
+    "player_tag": "#82QJQR"
+  },
+  
+  {
+    "id": 3,
+    "nom": "Stefanovitch",
+    "prenom": "Ilann",
+    "email": "stefanovitch@supercell.com",
+    "password": "password123",
+    "player_tag": "#9R2YV"
+  }
+]
