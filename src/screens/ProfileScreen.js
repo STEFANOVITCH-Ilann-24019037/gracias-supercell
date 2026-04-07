@@ -7,20 +7,23 @@ import {
   Pressable,
   ActivityIndicator,
   Alert,
+  Modal,
 } from 'react-native';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import * as FileSystem from 'expo-file-system';
 import * as Sharing from 'expo-sharing';
 import { captureRef } from 'react-native-view-shot';
 import Svg, { Circle, Line, Polygon, Text as SvgText } from 'react-native-svg';
+import QRCode from 'react-native-qrcode-svg';
 
 /**
  * Profile Screen component - displays connected user's account statistics
  * Generated as PNG image and shareable
  */
-export const ProfileScreen = ({ currentUser, onLogout }) => {
+export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
   const [saving, setSaving] = useState(false);
   const [flashMessage, setFlashMessage] = useState('');
+  const [showQrModal, setShowQrModal] = useState(false);
   const playerStats = currentUser.playerStats || {};
   const statsCardRef = useRef(null);
 
@@ -238,6 +241,10 @@ export const ProfileScreen = ({ currentUser, onLogout }) => {
           <Text style={styles.subtitle}>
             {playerStats.name || 'Joueur Brawl Stars'}
           </Text>
+          <View style={styles.tagBadge}>
+            <MaterialCommunityIcons name="tag-outline" size={12} color="#FFD8CC" />
+            <Text style={styles.tagBadgeText}>{currentUser.player_tag}</Text>
+          </View>
         </View>
 
         <View style={styles.infoSection}>
@@ -283,7 +290,6 @@ export const ProfileScreen = ({ currentUser, onLogout }) => {
               </Text>
               <Text style={styles.statLabel}>Trophées</Text>
             </View>
-
             <View style={styles.statCard}>
               <Text style={styles.statNumber}>{playerStats.expLevel || 0}</Text>
               <Text style={styles.statLabel}>Niveau</Text>
@@ -341,6 +347,25 @@ export const ProfileScreen = ({ currentUser, onLogout }) => {
             </View>
           </View>
         )}
+
+        <View style={styles.qrActionSection}>
+          <View style={styles.sectionHeaderRow}>
+            <MaterialCommunityIcons name="qrcode" size={18} color="#A78BFA" />
+            <Text style={styles.sectionTitle}>QR Code</Text>
+          </View>
+
+          <View style={styles.qrActionRow}>
+            <Pressable style={styles.qrButton} onPress={() => setShowQrModal(true)}>
+              <MaterialCommunityIcons name="qrcode-scan" size={18} color="#FFFFFF" />
+              <Text style={styles.qrButtonText}>Afficher mon QR</Text>
+            </Pressable>
+
+            <Pressable style={styles.qrButtonSecondary} onPress={() => onOpenQrScanner?.()}>
+              <MaterialCommunityIcons name="camera-outline" size={18} color="#FFFFFF" />
+              <Text style={styles.qrButtonText}>Scanner un QR</Text>
+            </Pressable>
+          </View>
+        </View>
       </View>
 
       <Pressable
@@ -365,11 +390,45 @@ export const ProfileScreen = ({ currentUser, onLogout }) => {
         )}
       </Pressable>
 
-      {flashMessage ? <Text style={styles.flashMessage}>{flashMessage}</Text> : null}
+      {flashMessage ? (
+        <View style={styles.flashToast}>
+          <MaterialCommunityIcons name="check-circle-outline" size={18} color="#A7F3D0" />
+          <Text style={styles.flashMessage}>{flashMessage}</Text>
+        </View>
+      ) : null}
 
       <Text style={styles.hint}>
         Créer une image PNG à partager partout
       </Text>
+
+      <Modal
+        visible={showQrModal}
+        transparent
+        animationType="fade"
+        onRequestClose={() => setShowQrModal(false)}
+      >
+        <View style={styles.modalBackdrop}>
+          <View style={styles.qrModalCard}>
+            <View style={styles.qrModalHeader}>
+              <Text style={styles.qrModalTitle}>Mon QR Code</Text>
+              <Pressable onPress={() => setShowQrModal(false)}>
+                <MaterialCommunityIcons name="close" size={22} color="#CBD5E1" />
+              </Pressable>
+            </View>
+
+            <View style={styles.qrCodeContainer}>
+              <QRCode value={currentUser.player_tag || ''} size={220} color="#FFFFFF" backgroundColor="#0F172A" />
+            </View>
+
+            <View style={styles.qrTagPill}>
+              <Text style={styles.qrModalTag}>{currentUser.player_tag}</Text>
+            </View>
+            <Text style={styles.qrModalHint}>
+              Scanne ce code pour remplir automatiquement le joueur 2 dans le mode Versus.
+            </Text>
+          </View>
+        </View>
+      </Modal>
 
       <View style={styles.spacer} />
     </ScrollView>
@@ -426,6 +485,24 @@ const styles = StyleSheet.create({
   subtitle: {
     fontSize: 14,
     color: '#94A3B8',
+  },
+  tagBadge: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    gap: 4,
+    marginTop: 8,
+    backgroundColor: 'rgba(255, 107, 53, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(255, 216, 204, 0.18)',
+    borderRadius: 999,
+    paddingHorizontal: 10,
+    paddingVertical: 5,
+  },
+  tagBadgeText: {
+    color: '#FFD8CC',
+    fontSize: 12,
+    fontWeight: '700',
+    letterSpacing: 0.2,
   },
   infoSection: {
     marginBottom: 24,
@@ -511,6 +588,94 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+  qrActionSection: {
+    marginTop: 14,
+    marginBottom: 6,
+  },
+  qrActionRow: {
+    flexDirection: 'column',
+    gap: 10,
+  },
+  qrButton: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#6366F1',
+    borderRadius: 10,
+    paddingVertical: 12,
+  },
+  qrButtonSecondary: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: '#334155',
+    borderRadius: 10,
+    paddingVertical: 12,
+  },
+  qrButtonText: {
+    color: '#FFFFFF',
+    fontSize: 13,
+    fontWeight: '700',
+  },
+  modalBackdrop: {
+    flex: 1,
+    backgroundColor: 'rgba(15, 23, 42, 0.88)',
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 20,
+  },
+  qrModalCard: {
+    width: '100%',
+    maxWidth: 340,
+    backgroundColor: '#1E293B',
+    borderRadius: 18,
+    borderWidth: 1,
+    borderColor: '#334155',
+    padding: 18,
+  },
+  qrModalHeader: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    marginBottom: 16,
+  },
+  qrModalTitle: {
+    color: '#FFFFFF',
+    fontSize: 18,
+    fontWeight: '800',
+  },
+  qrCodeContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    backgroundColor: '#0F172A',
+    borderRadius: 14,
+    padding: 12,
+  },
+  qrModalTag: {
+    color: '#FFFFFF',
+    fontSize: 16,
+    fontWeight: '800',
+    letterSpacing: 0.8,
+  },
+  qrTagPill: {
+    marginTop: 14,
+    alignSelf: 'center',
+    backgroundColor: '#334155',
+    borderWidth: 1,
+    borderColor: 'rgba(167, 139, 250, 0.35)',
+    borderRadius: 999,
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+  },
+  qrModalHint: {
+    marginTop: 10,
+    textAlign: 'center',
+    color: '#CBD5E1',
+    fontSize: 12,
+    lineHeight: 18,
+  },
   clubSection: {
     marginBottom: 16,
   },
@@ -555,11 +720,29 @@ const styles = StyleSheet.create({
     fontWeight: '600',
   },
   flashMessage: {
-    textAlign: 'center',
-    color: '#A7F3D0',
+    color: '#ECFDF5',
     fontSize: 12,
+    fontWeight: '700',
+  },
+  flashToast: {
+    marginHorizontal: 16,
+    marginTop: 2,
     marginBottom: 8,
-    fontWeight: '600',
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    gap: 8,
+    backgroundColor: 'rgba(16, 185, 129, 0.12)',
+    borderWidth: 1,
+    borderColor: 'rgba(16, 185, 129, 0.35)',
+    borderRadius: 12,
+    paddingVertical: 10,
+    paddingHorizontal: 14,
+    shadowColor: '#000000',
+    shadowOpacity: 0.18,
+    shadowRadius: 8,
+    shadowOffset: { width: 0, height: 2 },
+    elevation: 3,
   },
   hint: {
     textAlign: 'center',

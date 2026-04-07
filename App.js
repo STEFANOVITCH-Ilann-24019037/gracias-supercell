@@ -1,8 +1,9 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable } from 'react-native';
+import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable, Modal, Alert } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
+import { CameraView, useCameraPermissions } from 'expo-camera';
 
 // Importer les données JSON locales
 import apiBrawlers from './data/api/apibrawlers.json';
@@ -83,6 +84,9 @@ export default function App() {
   const [versusOpponentTag, setVersusOpponentTag] = useState('');
   const [versusPlayer1, setVersusPlayer1] = useState(null);
   const [versusPlayer2, setVersusPlayer2] = useState(null);
+  const [scannerVisible, setScannerVisible] = useState(false);
+  const [scannerLocked, setScannerLocked] = useState(false);
+  const [cameraPermission, requestCameraPermission] = useCameraPermissions();
 
   useEffect(() => {
     const savedUser = restoreUserSession();
@@ -111,6 +115,53 @@ export default function App() {
       name: currentUser.playerStats?.name || `${currentUser.prenom || ''} ${currentUser.nom || ''}`.trim(),
       tag: currentUser.player_tag,
     };
+  };
+
+  const normalizeScannedTag = (value) => {
+    const rawValue = String(value || '').trim().toUpperCase();
+    if (!rawValue) {
+      return null;
+    }
+
+    const match = rawValue.match(/#?[A-Z0-9]+/);
+    if (!match) {
+      return null;
+    }
+
+    return match[0].startsWith('#') ? match[0] : `#${match[0]}`;
+  };
+
+  const openQrScanner = async () => {
+    const permission = cameraPermission?.granted ? cameraPermission : await requestCameraPermission();
+
+    if (!permission?.granted) {
+      Alert.alert('Permission caméra', 'Autorise la caméra pour scanner un QR code.');
+      return;
+    }
+
+    setScannerLocked(false);
+    setScannerVisible(true);
+  };
+
+  const handleQrScanned = ({ data }) => {
+    if (scannerLocked) {
+      return;
+    }
+
+    const scannedTag = normalizeScannedTag(data);
+    if (!scannedTag) {
+      Alert.alert('QR invalide', 'Le QR code scanné ne contient pas de hashtag valide.');
+      setScannerVisible(false);
+      return;
+    }
+
+    setScannerLocked(true);
+    setScannerVisible(false);
+    setVersusPlayer1(null);
+    setVersusPlayer2(null);
+    setVersusOpponentTag(scannedTag);
+    setActiveTab('versus');
+    Alert.alert('QR code lu', `Hashtag ajouté : ${scannedTag}`);
   };
 
   if (!currentUser) {
@@ -384,8 +435,35 @@ export default function App() {
       );
     };
 
+    const MiniGraphRow = ({ label, leftValue, rightValue }) => {
+      const maxValue = Math.max(leftValue, rightValue, 1);
+      const leftWidth = `${Math.max(8, (leftValue / maxValue) * 100)}%`;
+      const rightWidth = `${Math.max(8, (rightValue / maxValue) * 100)}%`;
+
+      return (
+        <View style={styles.quickGraphRow}>
+          <Text style={styles.quickGraphLabel}>{label}</Text>
+          <View style={styles.quickGraphBars}>
+            <View style={styles.quickGraphBarWrap}>
+              <View style={[styles.quickGraphBar, styles.quickGraphBarLeft]}>
+                <View style={[styles.quickGraphBarFill, { width: leftWidth }]} />
+              </View>
+              <Text style={styles.quickGraphBarValue}>{leftValue.toLocaleString('fr-FR')}</Text>
+            </View>
+
+            <View style={styles.quickGraphBarWrap}>
+              <View style={[styles.quickGraphBar, styles.quickGraphBarRight]}>
+                <View style={[styles.quickGraphBarFill, styles.quickGraphBarFillRight, { width: rightWidth }]} />
+              </View>
+              <Text style={styles.quickGraphBarValue}>{rightValue.toLocaleString('fr-FR')}</Text>
+            </View>
+          </View>
+        </View>
+      );
+    };
+
     return (
-      <ScrollView style={styles.versusScroll}>
+      <View style={styles.versusResultContainer}>
         <View style={styles.versusContainer}>
           {/* Headers */}
           <View style={styles.versusHeaderRow}>
@@ -418,7 +496,7 @@ export default function App() {
             <Text style={styles.sectionTitle}>Top Brawlers</Text>
             <View style={styles.brawlerComparisonRow}>
               <View style={styles.brawlerComparisonColumn}>
-                <Text style={{ fontWeight: 'bold', marginBottom: 8, textAlign: 'center' }}>{versusPlayer1.name}</Text>
+                <Text style={styles.brawlerComparisonPlayerName}>{versusPlayer1.name}</Text>
                 {versusPlayer1.brawlers?.slice(0, 5).map((brawler, idx) => (
                   <View key={idx} style={styles.comparisonBrawlerItem}>
                     <Text style={styles.comparisonBrawlerName}>{brawler.name}</Text>
@@ -427,7 +505,7 @@ export default function App() {
                 ))}
               </View>
               <View style={styles.brawlerComparisonColumn}>
-                <Text style={{ fontWeight: 'bold', marginBottom: 8, textAlign: 'center' }}>{versusPlayer2.name}</Text>
+                <Text style={styles.brawlerComparisonPlayerName}>{versusPlayer2.name}</Text>
                 {versusPlayer2.brawlers?.slice(0, 5).map((brawler, idx) => (
                   <View key={idx} style={styles.comparisonBrawlerItem}>
                     <Text style={styles.comparisonBrawlerName}>{brawler.name}</Text>
@@ -437,11 +515,24 @@ export default function App() {
               </View>
             </View>
           </View>
+
+          <View style={styles.quickGraphSection}>
+            <View style={styles.sectionHeaderRow}>
+              <MaterialCommunityIcons name="chart-bar" size={18} color="#A78BFA" />
+              <Text style={styles.sectionTitle}>Graphique rapide</Text>
+            </View>
+
+            <View style={styles.quickGraphCard}>
+              <MiniGraphRow label="Trophées" leftValue={stats1.trophies} rightValue={stats2.trophies} />
+              <MiniGraphRow label="Niveau" leftValue={stats1.level} rightValue={stats2.level} />
+              <MiniGraphRow label="Prestige" leftValue={stats1.prestigeTotal} rightValue={stats2.prestigeTotal} />
+              <MiniGraphRow label="3v3" leftValue={stats1.victories3v3} rightValue={stats2.victories3v3} />
+            </View>
+          </View>
         </View>
-      </ScrollView>
+      </View>
     );
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -451,9 +542,12 @@ export default function App() {
             <View style={styles.userIconWrap}>
               <MaterialCommunityIcons name="account-circle" size={24} color="#FF6B35" />
             </View>
-            <View>
-              <Text style={styles.userNameText}>{currentUser.prenom || 'Utilisateur'}</Text>
-              <Text style={styles.userTagText}>{currentUser.player_tag || '-'}</Text>
+            <View style={styles.userIdentityTextBlock}>
+              <Text style={styles.userNameText}>{currentUser.prenom || 'Utilisateur'} {currentUser.nom || ''}</Text>
+              <View style={styles.userTagPill}>
+                <MaterialCommunityIcons name="tag-outline" size={12} color="#FFD8CC" />
+                <Text style={styles.userTagText}>{currentUser.player_tag || '-'}</Text>
+              </View>
             </View>
           </View>
 
@@ -573,7 +667,11 @@ export default function App() {
 
       {/* Contenu Versus */}
       {activeTab === 'versus' && (
-        <View style={styles.tabContent}>
+        <ScrollView
+          style={styles.tabScrollView}
+          contentContainerStyle={styles.tabScrollContent}
+          showsVerticalScrollIndicator={false}
+        >
           <View style={styles.versusInputContainer}>
             <View style={styles.versusAutoPlayerCard}>
               <Text style={styles.versusInputLabel}>Joueur 1 connecté</Text>
@@ -616,13 +714,48 @@ export default function App() {
               <Text style={styles.emptyText}>Entrez le hashtag du joueur à comparer puis appuyez sur Comparer</Text>
             </View>
           )}
-        </View>
+        </ScrollView>
       )}
 
       {/* Contenu Profil */}
       {activeTab === 'profile' && (
-        <ProfileScreen currentUser={currentUser} onLogout={handleLogout} />
+        <ProfileScreen currentUser={currentUser} onLogout={handleLogout} onOpenQrScanner={openQrScanner} />
       )}
+
+      <Modal
+        visible={scannerVisible}
+        animationType="slide"
+        onRequestClose={() => setScannerVisible(false)}
+      >
+        <View style={styles.scannerModalContainer}>
+          <View style={styles.scannerHeader}>
+            <Text style={styles.scannerTitle}>Scanner un QR code</Text>
+            <Pressable onPress={() => setScannerVisible(false)}>
+              <MaterialCommunityIcons name="close" size={24} color="#FFFFFF" />
+            </Pressable>
+          </View>
+
+          <Text style={styles.scannerSubtitle}>
+            Pointez la caméra sur le QR du profil pour remplir le joueur 2.
+          </Text>
+
+          <View style={styles.scannerCameraBox}>
+            <CameraView
+              style={styles.scannerCamera}
+              facing="back"
+              barcodeScannerSettings={{ barcodeTypes: ['qr'] }}
+              onBarcodeScanned={scannerLocked ? undefined : handleQrScanned}
+            />
+          </View>
+
+          <Pressable
+            style={styles.scannerCancelButton}
+            onPress={() => setScannerVisible(false)}
+          >
+            <Text style={styles.scannerCancelText}>Fermer</Text>
+          </Pressable>
+        </View>
+      </Modal>
 
       <StatusBar style="auto" />
     </View>
