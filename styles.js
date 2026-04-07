@@ -324,6 +324,26 @@ export const styles = StyleSheet.create({
     backgroundColor: '#2d2d44',
     gap: 12,
   },
+  versusAutoPlayerCard: {
+    backgroundColor: '#1a1a2e',
+    borderRadius: 10,
+    borderWidth: 1,
+    borderColor: 'rgba(255, 107, 53, 0.25)',
+    paddingHorizontal: 12,
+    paddingVertical: 10,
+  },
+  versusAutoPlayerName: {
+    color: '#FFFFFF',
+    fontSize: 15,
+    fontWeight: '700',
+    marginTop: 4,
+  },
+  versusAutoPlayerTag: {
+    color: '#FFD8CC',
+    fontSize: 11,
+    marginTop: 2,
+    fontWeight: '600',
+  },
   versusInputGroup: {
     gap: 6,
   },

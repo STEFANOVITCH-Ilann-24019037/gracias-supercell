@@ -9,6 +9,7 @@ import apiBrawlers from './data/api/apibrawlers.json';
 import apiPlayer1 from './data/api/apipalyer1.json';
 import apiPlayer2 from './data/api/apiplayer2.json';
 import { LoginScreen } from './src/screens/LoginScreen';
+import { ProfileScreen } from './src/screens/ProfileScreen';
 
 /**
  * Charge un joueur depuis les fichiers JSON locaux selon son tag
@@ -79,8 +80,7 @@ export default function App() {
   const [playerTag, setPlayerTag] = useState('');
   const [playerData, setPlayerData] = useState(null);
   const [activeTab, setActiveTab] = useState('brawlers'); // 'brawlers', 'player' ou 'versus'
-  const [versusPlayer1Tag, setVersusPlayer1Tag] = useState('');
-  const [versusPlayer2Tag, setVersusPlayer2Tag] = useState('');
+  const [versusOpponentTag, setVersusOpponentTag] = useState('');
   const [versusPlayer1, setVersusPlayer1] = useState(null);
   const [versusPlayer2, setVersusPlayer2] = useState(null);
 
@@ -99,6 +99,18 @@ export default function App() {
   const handleLogout = () => {
     setCurrentUser(null);
     clearUserSession();
+  };
+
+  const getCurrentUserVersusPlayer = () => {
+    if (!currentUser) {
+      return null;
+    }
+
+    return {
+      ...currentUser.playerStats,
+      name: currentUser.playerStats?.name || `${currentUser.prenom || ''} ${currentUser.nom || ''}`.trim(),
+      tag: currentUser.player_tag,
+    };
   };
 
   if (!currentUser) {
@@ -156,8 +168,8 @@ export default function App() {
   };
 
   const fetchVersus = async () => {
-    if (!versusPlayer1Tag.trim() || !versusPlayer2Tag.trim()) {
-      alert('Veuillez entrer les hashtags des deux joueurs');
+    if (!versusOpponentTag.trim()) {
+      alert('Veuillez entrer le hashtag du joueur à comparer');
       return;
     }
 
@@ -165,12 +177,11 @@ export default function App() {
     setActiveTab('versus');
 
     try {
-      // Charger les deux joueurs depuis les fichiers JSON
-      const player1 = loadPlayerFromJSON(versusPlayer1Tag);
-      const player2 = loadPlayerFromJSON(versusPlayer2Tag);
+      const player1 = getCurrentUserVersusPlayer();
+      const player2 = loadPlayerFromJSON(versusOpponentTag);
 
       if (!player1 || !player2) {
-        alert('Un ou plusieurs joueurs introuvables. Tags valides: #QLVP829R ou #VU02GGJQ');
+        alert('Joueur introuvable. Tags valides: #QLVP829R ou #VU02GGJQ');
         setLoading(false);
         return;
       }
@@ -473,6 +484,11 @@ export default function App() {
           onPress={() => setActiveTab('versus')}
           color={activeTab === 'versus' ? '#FF6B35' : '#666'}
         />
+        <Button
+          title="Profil"
+          onPress={() => setActiveTab('profile')}
+          color={activeTab === 'profile' ? '#FF6B35' : '#666'}
+        />
       </View>
 
       {/* Contenu Brawlers */}
@@ -559,25 +575,22 @@ export default function App() {
       {activeTab === 'versus' && (
         <View style={styles.tabContent}>
           <View style={styles.versusInputContainer}>
-            <View style={styles.versusInputGroup}>
-              <Text style={styles.versusInputLabel}>Joueur 1</Text>
-              <TextInput
-                style={styles.input}
-                placeholder="Hashtag joueur 1"
-                placeholderTextColor="#888"
-                value={versusPlayer1Tag}
-                onChangeText={setVersusPlayer1Tag}
-              />
+            <View style={styles.versusAutoPlayerCard}>
+              <Text style={styles.versusInputLabel}>Joueur 1 connecté</Text>
+              <Text style={styles.versusAutoPlayerName}>
+                {currentUser.prenom} {currentUser.nom}
+              </Text>
+              <Text style={styles.versusAutoPlayerTag}>{currentUser.player_tag}</Text>
             </View>
 
             <View style={styles.versusInputGroup}>
-              <Text style={styles.versusInputLabel}>Joueur 2</Text>
+              <Text style={styles.versusInputLabel}>Joueur à comparer</Text>
               <TextInput
                 style={styles.input}
-                placeholder="Hashtag joueur 2"
+                placeholder="Hashtag du joueur à comparer"
                 placeholderTextColor="#888"
-                value={versusPlayer2Tag}
-                onChangeText={setVersusPlayer2Tag}
+                value={versusOpponentTag}
+                onChangeText={setVersusOpponentTag}
               />
             </View>
 
@@ -600,14 +613,18 @@ export default function App() {
 
           {!versusPlayer1 && !versusPlayer2 && !loading && (
             <View style={styles.emptyContainer}>
-              <Text style={styles.emptyText}>Entrez les hashtags et appuyez sur Comparer</Text>
+              <Text style={styles.emptyText}>Entrez le hashtag du joueur à comparer puis appuyez sur Comparer</Text>
             </View>
           )}
         </View>
+      )}
+
+      {/* Contenu Profil */}
+      {activeTab === 'profile' && (
+        <ProfileScreen currentUser={currentUser} onLogout={handleLogout} />
       )}
 
       <StatusBar style="auto" />
     </View>
   );
 }
-
