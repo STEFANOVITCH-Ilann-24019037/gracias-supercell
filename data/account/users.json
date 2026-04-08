@@ -5,7 +5,22 @@
     "prenom": "Membre1",
     "email": "helali@supercell.com",
     "password": "password123",
-    "player_tag": "#2PP0Q0"
+    "player_tag": "#QLVP829R",
+    "playerStats": {
+      "name": "Code: Gas",
+      "trophies": 121503,
+      "highestTrophies": 160000,
+      "totalPrestigeLevel": 117,
+      "expLevel": 491,
+      "expPoints": 1222460,
+      "3vs3Victories": 110157,
+      "soloVictories": 1890,
+      "duoVictories": 3614,
+      "club": {
+        "name": "A Few Good Men",
+        "tag": "#208UU822P"
+      }
+    }
   },
   {
     "id": 2,
@@ -13,7 +28,22 @@
     "prenom": "Membre2",
     "email": "koliai@supercell.com",
     "password": "password123",
-    "player_tag": "#82QJQR"
+    "player_tag": "#VU02GGJQ",
+    "playerStats": {
+      "name": "aze",
+      "trophies": 44951,
+      "highestTrophies": 44951,
+      "totalPrestigeLevel": 10,
+      "expLevel": 144,
+      "expPoints": 107924,
+      "3vs3Victories": 5365,
+      "soloVictories": 442,
+      "duoVictories": 913,
+      "club": {
+        "name": "la méga team fr",
+        "tag": "#C098JUGJ"
+      }
+    }
   },
   
   {
@@ -22,6 +52,21 @@
     "prenom": "Ilann",
     "email": "stefanovitch@supercell.com",
     "password": "password123",
-    "player_tag": "#9R2YV"
+    "player_tag": "#QLVP829R",
+    "playerStats": {
+      "name": "Code: Gas",
+      "trophies": 121503,
+      "highestTrophies": 160000,
+      "totalPrestigeLevel": 117,
+      "expLevel": 491,
+      "expPoints": 1222460,
+      "3vs3Victories": 110157,
+      "soloVictories": 1890,
+      "duoVictories": 3614,
+      "club": {
+        "name": "A Few Good Men",
+        "tag": "#208UU822P"
+      }
+    }
   }
 ]
