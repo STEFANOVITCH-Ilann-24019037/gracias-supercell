@@ -7,8 +7,7 @@ import { CameraView, useCameraPermissions } from 'expo-camera';
 
 // Importer les données JSON locales
 import apiBrawlers from './data/api/apibrawlers.json';
-import apiPlayer1 from './data/api/apipalyer1.json';
-import apiPlayer2 from './data/api/apiplayer2.json';
+import playersList from './data/api/playersList';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 
