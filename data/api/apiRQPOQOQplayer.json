@@ -1,0 +1,334 @@
+{
+  "tag": "#RQPOQOQ",
+  "name": "Lurgaar",
+  "nameColor": "0xffff9727",
+  "icon": {
+    "id": 28000011
+  },
+  "trophies": 1073,
+  "highestTrophies": 1074,
+  "totalPrestigeLevel": 0,
+  "expLevel": 26,
+  "expPoints": 4138,
+  "isQualifiedFromChampionshipChallenge": false,
+  "3vs3Victories": 144,
+  "soloVictories": 36,
+  "duoVictories": 5,
+  "bestRoboRumbleTime": 0,
+  "bestTimeAsBigBrawler": 0,
+  "club": {},
+  "brawlers": [
+    {
+      "id": 16000000,
+      "name": "SHELLY",
+      "power": 7,
+      "rank": 1,
+      "trophies": 183,
+      "highestTrophies": 194,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000052,
+        "name": "STAR SHELLY"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000001,
+      "name": "COLT",
+      "power": 7,
+      "rank": 1,
+      "trophies": 93,
+      "highestTrophies": 97,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000001,
+        "name": "COLT"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": true,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000002,
+      "name": "BULL",
+      "power": 7,
+      "rank": 1,
+      "trophies": 210,
+      "highestTrophies": 222,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000003,
+        "name": "BULL"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": true
+      }
+    },
+    {
+      "id": 16000003,
+      "name": "BROCK",
+      "power": 7,
+      "rank": 1,
+      "trophies": 39,
+      "highestTrophies": 39,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 1,
+      "skin": {
+        "id": 29000839,
+        "name": "SUPER RANGER BROCK YELLOW"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000004,
+      "name": "RICO",
+      "power": 7,
+      "rank": 1,
+      "trophies": 65,
+      "highestTrophies": 67,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000009,
+        "name": "RICO"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000006,
+      "name": "BARLEY",
+      "power": 7,
+      "rank": 1,
+      "trophies": 148,
+      "highestTrophies": 148,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000059,
+        "name": "WIZARD BARLEY"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000007,
+      "name": "JESSIE",
+      "power": 7,
+      "rank": 1,
+      "trophies": 144,
+      "highestTrophies": 152,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000013,
+        "name": "JESSIE"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000008,
+      "name": "NITA",
+      "power": 7,
+      "rank": 1,
+      "trophies": 88,
+      "highestTrophies": 89,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 1,
+      "skin": {
+        "id": 29000014,
+        "name": "NITA"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000009,
+      "name": "DYNAMIKE",
+      "power": 4,
+      "rank": 1,
+      "trophies": 0,
+      "highestTrophies": 0,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000006,
+        "name": "DYNAMIKE"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000010,
+      "name": "EL PRIMO",
+      "power": 8,
+      "rank": 1,
+      "trophies": 65,
+      "highestTrophies": 69,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000007,
+        "name": "EL PRIMO"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000013,
+      "name": "POCO",
+      "power": 6,
+      "rank": 1,
+      "trophies": 38,
+      "highestTrophies": 46,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000021,
+        "name": "POCO"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000018,
+      "name": "DARRYL",
+      "power": 4,
+      "rank": 1,
+      "trophies": 0,
+      "highestTrophies": 0,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000034,
+        "name": "DARRYL"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    },
+    {
+      "id": 16000020,
+      "name": "FRANK",
+      "power": 7,
+      "rank": 1,
+      "trophies": 0,
+      "highestTrophies": 0,
+      "prestigeLevel": 0,
+      "currentWinStreak": 0,
+      "maxWinStreak": 0,
+      "skin": {
+        "id": 29000042,
+        "name": "FRANK"
+      },
+      "gadgets": [],
+      "gears": [],
+      "starPowers": [],
+      "hyperCharges": [],
+      "buffies": {
+        "gadget": false,
+        "starPower": false,
+        "hyperCharge": false
+      }
+    }
+  ]
+}

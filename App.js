@@ -12,27 +12,26 @@ import apiPlayer2 from './data/api/apiplayer2.json';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
 
+
 /**
- * Charge un joueur depuis les fichiers JSON locaux selon son tag
+ * Charge un joueur depuis la liste centralisée
  */
 const loadPlayerFromJSON = (playerTag) => {
-  const tag = playerTag.replace('#', '').toLowerCase();
+  const tag = playerTag.replace('#', '').toUpperCase();
 
-  // Vérifier le tag et retourner le joueur correspondant
-  if (tag.includes('qlvp829r')) {
-    return apiPlayer1;
-  } else if (tag.includes('vu02ggjq')) {
-    return apiPlayer2;
+  try {
+    // Chercher dans la liste des joueurs
+    if (playersList[tag]) {
+      console.log('Joueur chargé:', tag);
+      return playersList[tag];
+    }
+
+    console.error(`Joueur ${tag} non trouvé`);
+    return null;
+  } catch (error) {
+    console.error(`Erreur: Impossible de charger le joueur ${tag}`, error.message);
+    return null;
   }
-
-  // Sinon, vérifier les anciens tags de test
-  if (tag.includes('player1') || tag.includes('82rgu8pr')) {
-    return apiPlayer1;
-  } else if (tag.includes('player2') || tag.includes('8lq9jr82')) {
-    return apiPlayer2;
-  }
-
-  return null;
 };
 
 const SESSION_USER_KEY = 'gracias-supercell.currentUser';
@@ -203,7 +202,7 @@ export default function App() {
       const playerData = loadPlayerFromJSON(playerTag);
 
       if (!playerData) {
-        alert('Joueur introuvable. Tags valides: #QLVP829R ou #VU02GGJQ');
+        alert('Joueur introuvable. Vérifiez le hashtag.');
         setLoading(false);
         return;
       }
