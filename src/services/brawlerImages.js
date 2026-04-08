@@ -1,0 +1,242 @@
+/**
+ * Service pour charger les images des brawlers
+ * Utilise des imports statiques qui fonctionnent en Web ET React Native
+ */
+
+// Import de toutes les images
+import img8bit from '../../assets/brawler/8-BIT.webp';
+import imgAlli from '../../assets/brawler/ALLI.webp';
+import imgAmbre from '../../assets/brawler/AMBRE.webp';
+import imgAngelo from '../../assets/brawler/ANGELO.webp';
+import imgAsh from '../../assets/brawler/ASH.webp';
+import imgBarley from '../../assets/brawler/BARLEY.webp';
+import imgBea from '../../assets/brawler/BEA.webp';
+import imgBelle from '../../assets/brawler/BELLE.webp';
+import imgBerry from '../../assets/brawler/BERRY.webp';
+import imgBibi from '../../assets/brawler/BIBI.webp';
+import imgBo from '../../assets/brawler/BO.webp';
+import imgBonnie from '../../assets/brawler/BONNIE.webp';
+import imgBrock from '../../assets/brawler/BROCK.webp';
+import imgBull from '../../assets/brawler/BULL.webp';
+import imgBuster from '../../assets/brawler/BUSTER.webp';
+import imgBuzz from '../../assets/brawler/BUZZ.webp';
+import imgByron from '../../assets/brawler/BYRON.webp';
+import imgCarl from '../../assets/brawler/CARL.webp';
+import imgCharlie from '../../assets/brawler/CHARLIE.webp';
+import imgChester from '../../assets/brawler/CHESTER.webp';
+import imgChuck from '../../assets/brawler/CHUCK.webp';
+import imgClancy from '../../assets/brawler/CLANCY.webp';
+import imgColette from '../../assets/brawler/COLETTE.webp';
+import imgColt from '../../assets/brawler/COLT.webp';
+import imgCordelius from '../../assets/brawler/CORDELIUS.webp';
+import imgCrow from '../../assets/brawler/CROW.webp';
+import imgDarryl from '../../assets/brawler/DARRYL.webp';
+import imgDoug from '../../assets/brawler/DOUG.webp';
+import imgDraco from '../../assets/brawler/DRACO.webp';
+import imgDynamike from '../../assets/brawler/DYNAMIKE.webp';
+import imgEdgar from '../../assets/brawler/EDGAR.webp';
+import imgElPrimo from '../../assets/brawler/EL PRIMO.webp';
+import imgEmz from '../../assets/brawler/EMZ.webp';
+import imgEve from '../../assets/brawler/EVE.webp';
+import imgFang from '../../assets/brawler/FANG.webp';
+import imgFink from '../../assets/brawler/FINK.webp';
+import imgFrank from '../../assets/brawler/FRANK.webp';
+import imgGale from '../../assets/brawler/GALE.webp';
+import imgGene from '../../assets/brawler/GENE.webp';
+import imgGigi from '../../assets/brawler/GIGI.webp';
+import imgGlowbert from '../../assets/brawler/GLOWBERT.webp';
+import imgGray from '../../assets/brawler/GRAY.webp';
+import imgGriff from '../../assets/brawler/GRIFF.webp';
+import imgGrom from '../../assets/brawler/GROM.webp';
+import imgGus from '../../assets/brawler/GUS.webp';
+import imgHank from '../../assets/brawler/HANK.webp';
+import imgJacky from '../../assets/brawler/JACKY.webp';
+import imgJaeYong from '../../assets/brawler/JAE-YONG.webp';
+import imgJanet from '../../assets/brawler/JANET.webp';
+import imgJessie from '../../assets/brawler/JESSIE.webp';
+import imgJuju from '../../assets/brawler/JUJU.webp';
+import imgKaze from '../../assets/brawler/KAZE.webp';
+import imgKenji from '../../assets/brawler/KENJI.webp';
+import imgKit from '../../assets/brawler/KIT.webp';
+import imgLarryLawrie from '../../assets/brawler/LARRY & LAWRIE.webp';
+import imgLeon from '../../assets/brawler/LEON.webp';
+import imgLily from '../../assets/brawler/LILY.webp';
+import imgLola from '../../assets/brawler/LOLA.webp';
+import imgLou from '../../assets/brawler/LOU.webp';
+import imgLumi from '../../assets/brawler/LUMI.webp';
+import imgMaisie from '../../assets/brawler/MAISIE.webp';
+import imgMandy from '../../assets/brawler/MANDY.webp';
+import imgMax from '../../assets/brawler/MAX.webp';
+import imgMeeple from '../../assets/brawler/MEEPLE.webp';
+import imgMeg from '../../assets/brawler/MEG.webp';
+import imgMelodie from '../../assets/brawler/MELODIE.webp';
+import imgMico from '../../assets/brawler/MICO.webp';
+import imgMina from '../../assets/brawler/MINA.webp';
+import imgMoe from '../../assets/brawler/MOE.webp';
+import imgMortis from '../../assets/brawler/MORTIS.webp';
+import imgMrP from '../../assets/brawler/MR. P.webp';
+import imgNajia from '../../assets/brawler/NAJIA.webp';
+import imgNani from '../../assets/brawler/NANI.webp';
+import imgNita from '../../assets/brawler/NITA.webp';
+import imgOlli from '../../assets/brawler/OLLI.webp';
+import imgOtis from '../../assets/brawler/OTIS.webp';
+import imgPam from '../../assets/brawler/PAM.webp';
+import imgPearl from '../../assets/brawler/PEARL.webp';
+import imgPenny from '../../assets/brawler/PENNY.webp';
+import imgPierce from '../../assets/brawler/PIERCE.webp';
+import imgPiper from '../../assets/brawler/PIPER.webp';
+import imgPoco from '../../assets/brawler/POCO.webp';
+import imgRico from '../../assets/brawler/RICO.webp';
+import imgRosa from '../../assets/brawler/ROSA.webp';
+import imgRt from '../../assets/brawler/RT.webp';
+import imgRuff from '../../assets/brawler/RUFF.webp';
+import imgSam from '../../assets/brawler/SAM.webp';
+import imgSandy from '../../assets/brawler/SANDY.webp';
+import imgShade from '../../assets/brawler/SHADE.webp';
+import imgShelly from '../../assets/brawler/SHELLY.webp';
+import imgSirius from '../../assets/brawler/SIRIUS.webp';
+import imgSpike from '../../assets/brawler/SPIKE.webp';
+import imgSprout from '../../assets/brawler/SPROUT.webp';
+import imgSqueak from '../../assets/brawler/SQUEAK.webp';
+import imgStu from '../../assets/brawler/STU.webp';
+import imgSurge from '../../assets/brawler/SURGE.webp';
+import imgTara from '../../assets/brawler/TARA.webp';
+import imgTick from '../../assets/brawler/TICK.webp';
+import imgTrunk from '../../assets/brawler/TRUNK.webp';
+import imgWillow from '../../assets/brawler/WILLOW.webp';
+import imgZiggy from '../../assets/brawler/ZIGGY.webp';
+
+// Mapping des images
+const brawlerImagesMap = {
+  '8-BIT': img8bit,
+  'ALLI': imgAlli,
+  'AMBRE': imgAmbre,
+  'ANGELO': imgAngelo,
+  'ASH': imgAsh,
+  'BARLEY': imgBarley,
+  'BEA': imgBea,
+  'BELLE': imgBelle,
+  'BERRY': imgBerry,
+  'BIBI': imgBibi,
+  'BO': imgBo,
+  'BONNIE': imgBonnie,
+  'BROCK': imgBrock,
+  'BULL': imgBull,
+  'BUSTER': imgBuster,
+  'BUZZ': imgBuzz,
+  'BYRON': imgByron,
+  'CARL': imgCarl,
+  'CHARLIE': imgCharlie,
+  'CHESTER': imgChester,
+  'CHUCK': imgChuck,
+  'CLANCY': imgClancy,
+  'COLETTE': imgColette,
+  'COLT': imgColt,
+  'CORDELIUS': imgCordelius,
+  'CROW': imgCrow,
+  'DARRYL': imgDarryl,
+  'DOUG': imgDoug,
+  'DRACO': imgDraco,
+  'DYNAMIKE': imgDynamike,
+  'EDGAR': imgEdgar,
+  'EL PRIMO': imgElPrimo,
+  'EMZ': imgEmz,
+  'EVE': imgEve,
+  'FANG': imgFang,
+  'FINK': imgFink,
+  'FRANK': imgFrank,
+  'GALE': imgGale,
+  'GENE': imgGene,
+  'GIGI': imgGigi,
+  'GLOWBERT': imgGlowbert,
+  'GRAY': imgGray,
+  'GRIFF': imgGriff,
+  'GROM': imgGrom,
+  'GUS': imgGus,
+  'HANK': imgHank,
+  'JACKY': imgJacky,
+  'JAE-YONG': imgJaeYong,
+  'JANET': imgJanet,
+  'JESSIE': imgJessie,
+  'JUJU': imgJuju,
+  'KAZE': imgKaze,
+  'KENJI': imgKenji,
+  'KIT': imgKit,
+  'LARRY & LAWRIE': imgLarryLawrie,
+  'LEON': imgLeon,
+  'LILY': imgLily,
+  'LOLA': imgLola,
+  'LOU': imgLou,
+  'LUMI': imgLumi,
+  'MAISIE': imgMaisie,
+  'MANDY': imgMandy,
+  'MAX': imgMax,
+  'MEEPLE': imgMeeple,
+  'MEG': imgMeg,
+  'MELODIE': imgMelodie,
+  'MICO': imgMico,
+  'MINA': imgMina,
+  'MOE': imgMoe,
+  'MORTIS': imgMortis,
+  'MR. P': imgMrP,
+  'NAJIA': imgNajia,
+  'NANI': imgNani,
+  'NITA': imgNita,
+  'OLLI': imgOlli,
+  'OTIS': imgOtis,
+  'PAM': imgPam,
+  'PEARL': imgPearl,
+  'PENNY': imgPenny,
+  'PIERCE': imgPierce,
+  'PIPER': imgPiper,
+  'POCO': imgPoco,
+  'RICO': imgRico,
+  'ROSA': imgRosa,
+  'RT': imgRt,
+  'RUFF': imgRuff,
+  'SAM': imgSam,
+  'SANDY': imgSandy,
+  'SHADE': imgShade,
+  'SHELLY': imgShelly,
+  'SIRIUS': imgSirius,
+  'SPIKE': imgSpike,
+  'SPROUT': imgSprout,
+  'SQUEAK': imgSqueak,
+  'STU': imgStu,
+  'SURGE': imgSurge,
+  'TARA': imgTara,
+  'TICK': imgTick,
+  'TRUNK': imgTrunk,
+  'WILLOW': imgWillow,
+  'ZIGGY': imgZiggy,
+};
+
+// Cache pour les images
+const imageCache = new Map();
+
+/**
+ * Récupère l'image d'un brawler par son nom
+ * @param {string} brawlerName - Le nom du brawler
+ * @returns {*} - L'image requierée ou null
+ */
+export const getBrawlerImage = (brawlerName) => {
+  if (!brawlerName) {
+    return null;
+  }
+
+  // Vérifier le cache
+  if (imageCache.has(brawlerName)) {
+    return imageCache.get(brawlerName);
+  }
+
+  // Récupérer l'image
+  const image = brawlerImagesMap[brawlerName] || null;
+
+  // Stocker en cache
+  if (image) {
+    imageCache.set(brawlerName, image);
+  }
+
+  return image;
+};
+

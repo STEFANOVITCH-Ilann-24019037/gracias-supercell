@@ -1,17 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable, Modal, Alert } from 'react-native';
+import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable, Modal, Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-
-// Importer les données JSON locales
-import apiBrawlers from './data/api/apibrawlers.json';
-import apiPlayer1 from './data/api/apipalyer1.json';
-import apiPlayer2 from './data/api/apiplayer2.json';
+import { getBrawlerImage } from './src/services/brawlerImages';
+import { loadPlayersData, getPlayersData } from './src/services/playersDataService';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
+import apiPlayer1 from './data/api/apiQLVP829Rplayer.json';
+import apiPlayer2 from './data/api/apiVU02GGJQplayer.json';
+import apiRQPOQOQplayer from './data/api/apiRQPOQOQplayer.json';
+import api2PVJU20JQplayer from './data/api/api2PVJU20JQplayer.json';
+import api2UVJJPQLGPplayer from './data/api/api2UVJJPQLGPplayer.json';
+import apilgoqjvr2uplayer from './data/api/apilgoqjvr2uplayer.json';
 
+// Créer la liste des joueurs pour recherche rapide
+const playersList = {
+  QLVP829R: apiPlayer1,
+  VU02GGJQ: apiPlayer2,
+  RQPOQOQ: apiRQPOQOQplayer,
+  '2PVJU20JQ': api2PVJU20JQplayer,
+  '2UVJJPQLGP': api2UVJJPQLGPplayer,
+  LGOQJVR2UP: apilgoqjvr2uplayer,
+};
 
 /**
  * Charge un joueur depuis la liste centralisée
@@ -96,6 +108,10 @@ export default function App() {
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
+    // Charger les données des joueurs au démarrage
+    loadPlayersData().catch(error => {
+      console.error('Erreur lors du chargement initial des données:', error);
+    });
     persistUserSession(user);
   };
 
@@ -177,9 +193,11 @@ export default function App() {
     setActiveTab('brawlers');
 
     try {
-      // Charger les données des brawlers depuis le JSON local
-      console.log('Brawlers chargés:', apiBrawlers.items?.length || 0);
-      setBrawlers(apiBrawlers.items || []);
+      // Charger les données des brawlers via le service
+      const data = getPlayersData() || (await loadPlayersData());
+      const brawlersData = data.brawlers?.items || [];
+      console.log('Brawlers chargés:', brawlersData.length);
+      setBrawlers(brawlersData);
     } catch (error) {
       console.error('Erreur:', error.message);
       alert('Erreur: ' + error.message);
@@ -253,8 +271,22 @@ export default function App() {
     }
   };
 
-  const renderBrawlerCard = ({ item }) => (
+  const renderBrawlerCard = ({ item }) => {
+    // Récupérer l'image du brawler à partir du service
+    const imagePath = getBrawlerImage(item.name);
+
+    return (
     <View style={styles.card}>
+      {imagePath && (
+        <View style={styles.cardImageContainer}>
+          <Image
+            source={imagePath}
+            style={styles.brawlerImage}
+            resizeMode="contain"
+          />
+        </View>
+      )}
+
       <View style={styles.cardHeader}>
         <Text style={styles.brawlerName}>{item.name}</Text>
         <Text style={styles.brawlerId}>#{item.id}</Text>
@@ -299,7 +331,8 @@ export default function App() {
         </View>
       )}
     </View>
-  );
+    );
+  };
 
   const renderPlayerCard = () => {
     if (!playerData) return null;

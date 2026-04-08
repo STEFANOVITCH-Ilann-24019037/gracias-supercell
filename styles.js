@@ -174,6 +174,20 @@ export const styles = StyleSheet.create({
     borderLeftColor: '#FF6B35',
     elevation: 5,
   },
+  cardImageContainer: {
+    width: '100%',
+    height: 200,
+    backgroundColor: 'rgba(0, 0, 0, 0.2)',
+    borderRadius: 8,
+    marginBottom: 12,
+    justifyContent: 'center',
+    alignItems: 'center',
+    overflow: 'hidden',
+  },
+  brawlerImage: {
+    width: '100%',
+    height: '100%',
+  },
   cardHeader: {
     flexDirection: 'row',
     justifyContent: 'space-between',
