@@ -15,18 +15,21 @@ export const LoginScreen = ({ onLoginSuccess }) => {
 
   const handleLogin = () => {
     setErrorMsg('');
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedPassword = password.trim();
 
-    if (!email || !password) {
+    if (!normalizedEmail || !normalizedPassword) {
       setErrorMsg('Please enter both email and password.');
       return;
     }
 
     const foundUser = usersData.find(
-      (user) => user.email.toLowerCase() === email.toLowerCase() && user.password === password
+      (user) => user.email.trim().toLowerCase() === normalizedEmail && user.password.trim() === normalizedPassword
     );
 
     if (foundUser) {
-      onLoginSuccess(foundUser);
+      // Clone to prevent accidental shared-reference mutations.
+      onLoginSuccess(JSON.parse(JSON.stringify(foundUser)));
     } else {
       setErrorMsg('Invalid email or password.');
     }

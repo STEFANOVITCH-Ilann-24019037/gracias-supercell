@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { CameraView, useCameraPermissions } from 'expo-camera';
+import usersData from './data/account/users.json';
 
 // Importer les données JSON locales
 import apiBrawlers from './data/api/apibrawlers.json';
@@ -42,7 +43,16 @@ const restoreUserSession = () => {
 
   try {
     const raw = window.sessionStorage.getItem(SESSION_USER_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw);
+    const matchedUser = usersData.find(
+      (user) => user.id === parsed?.id || user.email?.toLowerCase() === parsed?.email?.toLowerCase()
+    );
+
+    return matchedUser || parsed;
   } catch (error) {
     return null;
   }

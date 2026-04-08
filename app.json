@@ -24,7 +24,7 @@
       "package": "com.anonymous.graciassupercell"
     },
     "web": {
-      "favicon": "./assets/favicon/favicon.ico"
+      "favicon": "./assets/favicon/favicon-96x96.png"
     }
   }
 }
