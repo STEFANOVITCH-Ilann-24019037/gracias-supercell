@@ -73,7 +73,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     padding: 20,
-    backgroundColor: '#1E1E2C', 
+    backgroundColor: '#000000',
   },
   title: {
     fontSize: 32,
@@ -89,12 +89,14 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   input: {
-    backgroundColor: '#2D2D44',
-    color: '#FFF',
+    backgroundColor: '#0F172A',
+    color: '#FFFFFF',
     padding: 15,
     borderRadius: 8,
     marginBottom: 15,
     fontSize: 16,
+    borderWidth: 1,
+    borderColor: '#334155',
   },
   errorText: {
     color: '#FF4C4C',
@@ -104,5 +106,10 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     marginTop: 10,
+    borderRadius: 10,
+    backgroundColor: 'rgba(0, 255, 0, 0.05)',
+    borderWidth: 2,
+    borderColor: '#00ff00',
+    overflow: 'hidden',
   },
 });
