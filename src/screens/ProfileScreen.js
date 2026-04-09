@@ -20,11 +20,10 @@ import QRCode from 'react-native-qrcode-svg';
  * Screen that displays the connected user's profile, statistics, QR code, and sharing actions.
  * @param {Object} props - Component props.
  * @param {Object} props.currentUser - Connected user data.
- * @param {Function} props.onLogout - Callback invoked when the user logs out.
  * @param {Function} props.onOpenQrScanner - Callback invoked to open the QR scanner.
  * @returns {JSX.Element} The profile screen UI.
  */
-export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
+export const ProfileScreen = ({ currentUser, onOpenQrScanner }) => {
   const [saving, setSaving] = useState(false);
   const [flashMessage, setFlashMessage] = useState('');
   const [showQrModal, setShowQrModal] = useState(false);
