@@ -4,54 +4,12 @@ import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import { loadPlayersData, getPlayersData } from './src/services/playersDataService';
+import { loadPlayersData, getPlayersData, loadPlayerFromJSON } from './src/services/playersDataService';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { BrawlersScreen } from './src/screens/BrawlersScreen';
 import { PlayerSearchScreen } from './src/screens/PlayerSearchScreen';
 import { VersusScreen } from './src/screens/VersusScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
-import usersData from './data/account/users.json';
-import apiPlayer1 from './data/api/apiQLVP829Rplayer.json';
-import apiPlayer2 from './data/api/apiVU02GGJQplayer.json';
-import apiRQPOQOQplayer from './data/api/apiRQPOQOQplayer.json';
-import api2PVJU20JQplayer from './data/api/api2PVJU20JQplayer.json';
-import api2UVJJPQLGPplayer from './data/api/api2UVJJPQLGPplayer.json';
-import apilgoqjvr2uplayer from './data/api/apilgoqjvr2uplayer.json';
-
-/**
- * Player lookup table used for local hashtag searches.
- * @type {Record<string, unknown>}
- */
-const playersList = {
-  QLVP829R: apiPlayer1,
-  VU02GGJQ: apiPlayer2,
-  RQPOQOQ: apiRQPOQOQplayer,
-  '2PVJU20JQ': api2PVJU20JQplayer,
-  '2UVJJPQLGP': api2UVJJPQLGPplayer,
-  LGOQJVR2UP: apilgoqjvr2uplayer,
-};
-
-/**
- * Load a player from the centralized lookup list.
- * @param {string} playerTag - Player hashtag with or without the leading #.
- * @returns {Object|null} The resolved player data, or null when not found.
- */
-const loadPlayerFromJSON = (playerTag) => {
-  const tag = playerTag.replace('#', '').toUpperCase();
-
-  try {
-    if (playersList[tag]) {
-      console.log('Player loaded:', tag);
-      return playersList[tag];
-    }
-
-    console.error(`Player ${tag} not found`);
-    return null;
-  } catch (error) {
-    console.error(`Error: Unable to load player ${tag}`, error.message);
-    return null;
-  }
-};
 
 /**
  * Storage key used to persist the connected user in sessionStorage.
@@ -74,12 +32,7 @@ const restoreUserSession = () => {
       return null;
     }
 
-    const parsed = JSON.parse(raw);
-    const matchedUser = usersData.find(
-      (user) => user.id === parsed?.id || user.email?.toLowerCase() === parsed?.email?.toLowerCase()
-    );
-
-    return matchedUser || parsed;
+    return JSON.parse(raw);
   } catch (error) {
     return null;
   }
@@ -151,7 +104,7 @@ export default function App() {
    */
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
-    // Load player data on startup.
+    // Load player data in the background after login.
     loadPlayersData().catch(error => {
       console.error('Error while loading initial data:', error);
     });
@@ -255,7 +208,7 @@ export default function App() {
   }
 
   /**
-   * Loads the local brawler list and switches the active tab to brawlers.
+   * Loads the remote brawler list and switches the active tab to brawlers.
    * @returns {Promise<void>} A promise that resolves after the list is loaded.
    */
   const fetchBrawlers = async () => {
@@ -263,39 +216,38 @@ export default function App() {
     setActiveTab('brawlers');
 
     try {
-      // Load brawler data through the service.
+      // Load brawler data through the remote service.
       const data = getPlayersData() || (await loadPlayersData());
       const brawlersData = data.brawlers?.items || [];
       console.log('Brawlers loaded:', brawlersData.length);
       setBrawlers(brawlersData);
     } catch (error) {
       console.error('Error:', error.message);
-      alert('Erreur: ' + error.message);
+      alert('Error: ' + error.message);
     } finally {
       setLoading(false);
     }
   };
 
   /**
-   * Looks up a player from the local JSON files and opens the player tab.
+   * Looks up a player from the remote JSON endpoint and opens the player tab.
    * @returns {Promise<void>} A promise that resolves after the lookup finishes.
    */
   const fetchPlayer = async () => {
     if (!playerTag.trim()) {
-      alert('Veuillez entrer un hashtag de joueur');
+      alert('Please enter a player hashtag');
       return;
     }
 
     setLoading(true);
     setActiveTab('player');
+    setPlayerData(null);
 
     try {
-      // Load the player from the local JSON files.
-      const playerData = loadPlayerFromJSON(playerTag);
+      const playerData = await loadPlayerFromJSON(playerTag);
 
       if (!playerData) {
-        alert('Joueur introuvable. Vérifiez le hashtag.');
-        setLoading(false);
+        alert('Player not found. Check the hashtag and try again.');
         return;
       }
 
@@ -303,7 +255,7 @@ export default function App() {
       setPlayerData(playerData);
     } catch (error) {
       console.error('Error:', error.message);
-      alert('Erreur: ' + error.message);
+      alert('Error: ' + error.message);
     } finally {
       setLoading(false);
     }
@@ -315,26 +267,26 @@ export default function App() {
    */
   const fetchVersus = async () => {
     if (!versusOpponentTag.trim()) {
-      alert('Veuillez entrer le hashtag du joueur à comparer');
+      alert('Please enter the opponent hashtag');
       return;
     }
 
     setLoading(true);
     setActiveTab('versus');
+    setVersusPlayer1(null);
+    setVersusPlayer2(null);
 
     try {
       const player1 = getCurrentUserVersusPlayer();
-      const player2 = loadPlayerFromJSON(versusOpponentTag);
+      const player2 = await loadPlayerFromJSON(versusOpponentTag);
 
       if (!player1 || !player2) {
-        alert('Joueur introuvable. Tags valides: #QLVP829R ou #VU02GGJQ');
-        setLoading(false);
+        alert('Player not found. Try a valid tag such as #QLVP829R or #VU02GGJQ.');
         return;
       }
 
       if (player1.tag === player2.tag) {
-        alert('Veuillez sélectionner deux joueurs différents');
-        setLoading(false);
+        alert('Please select two different players.');
         return;
       }
 
@@ -343,7 +295,7 @@ export default function App() {
       console.log('Versus loaded:', player1.name, 'vs', player2.name);
     } catch (error) {
       console.error('Error:', error.message);
-      alert('Erreur: ' + error.message);
+      alert('Error: ' + error.message);
     } finally {
       setLoading(false);
     }

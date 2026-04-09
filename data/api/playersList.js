@@ -1,64 +1,52 @@
-/**
- * playersList.js - AUTO-GÉNÉRÉ
- * 
- * ⚠️ GÉNÉRATION AUTOMATIQUE - NE PAS MODIFIER!
- * 
- * Pour ajouter un joueur:
- * 1. Créer: data/api/api + TAG + player.json
- * 2. Ajouter dans playersConfig.json
- * 3. EXÉCUTER: npm run sync-players
- * 
- * C'est tout!
- */
-
-import playersConfig from './playersConfig.json';
-
-// AUTO-IMPORT: Tous les fichiers joueurs sont importés ici
-// Cette section est régénérée automatiquement
-import apiQLVP829Rplayer from './apiQLVP829Rplayer.json';
-import apiVU02GGJQplayer from './apiVU02GGJQplayer.json';
-import apiRQPOQOQplayer from './apiRQPOQOQplayer.json';
-import api2PVJU20JQplayer from './api2PVJU20JQplayer.json';
-import api2UVJJPQLGPplayer from './api2UVJJPQLGPplayer.json';
+const RAW_GITHUB_BASE_URL =
+  'https://raw.githubusercontent.com/STEFANOVITCH-Ilann-24019037/gracias-supercell/refs/heads/main/';
 
 /**
- * Dictionnaire AUTO-GÉNÉRÉ de tous les joueurs
+ * Builds an absolute raw GitHub URL from a repository-relative path.
+ * @param {string} relativePath - Relative file path inside the repository.
+ * @returns {string} The fully qualified raw GitHub URL.
  */
-const allImports = {
-  'apiQLVP829Rplayer.json': apiQLVP829Rplayer,
-  'apiVU02GGJQplayer.json': apiVU02GGJQplayer,
-  'apiRQPOQOQplayer.json': apiRQPOQOQplayer,
-  'api2PVJU20JQplayer.json': api2PVJU20JQplayer,
-  'api2UVJJPQLGPplayer.json': api2UVJJPQLGPplayer,
+const buildRawUrl = (relativePath) => `${RAW_GITHUB_BASE_URL}${relativePath}`;
+
+/**
+ * Fetches a JSON resource from the raw GitHub repository.
+ * @param {string} relativePath - Relative path to the JSON file.
+ * @returns {Promise<unknown>} The parsed JSON payload.
+ */
+const fetchJson = async (relativePath) => {
+  const response = await fetch(buildRawUrl(relativePath));
+
+  if (!response.ok) {
+    throw new Error(`Failed to load ${relativePath} (${response.status} ${response.statusText})`);
+  }
+
+  return response.json();
 };
 
 /**
- * Charge la liste des joueurs depuis playersConfig.json
- * Les joueurs dans playersConfig.json sont automatiquement détectés
+ * Loads the full remote players list.
+ * @returns {Promise<Record<string, unknown>>} The player lookup table keyed by tag.
  */
-const buildPlayersList = () => {
+const loadPlayersList = async () => {
+  const playersConfig = await fetchJson('data/api/playersConfig.json');
   const playersList = {};
-  
-  if (!playersConfig.players) {
-    console.error('playersConfig.json invalide - pas de clé "players"');
-    return playersList;
-  }
-  
-  playersConfig.players.forEach(player => {
-    if (!player.filename) {
-      console.warn(`Joueur ${player.tag} n'a pas de filename dans playersConfig.json`);
-      return;
-    }
-    
-    if (allImports[player.filename]) {
-      playersList[player.tag] = allImports[player.filename];
-      console.log(`✅ Joueur chargé: ${player.tag}`);
-    } else {
-      console.warn(`⚠️  Fichier ${player.filename} non trouvé - vérifiez playersConfig.json`);
-    }
-  });
-  
+  const players = Array.isArray(playersConfig?.players) ? playersConfig.players : [];
+
+  await Promise.all(
+    players.map(async (player) => {
+      if (!player?.tag || !player?.filename) {
+        return;
+      }
+
+      try {
+        playersList[player.tag] = await fetchJson(`data/api/${player.filename}`);
+      } catch (error) {
+        console.warn(`Unable to load player ${player.tag}: ${error.message}`);
+      }
+    })
+  );
+
   return playersList;
 };
 
-export default buildPlayersList();
+export default loadPlayersList;

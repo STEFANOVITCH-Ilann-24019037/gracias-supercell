@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
 
-import usersData from '../../data/account/users.json'; 
+import { loadUsersData } from '../services/playersDataService';
 
 /**
- * Screen component for local user authentication.
+ * Screen component for remote user authentication.
  * @param {Object} props - Component props.
  * @param {Function} props.onLoginSuccess - Callback invoked after a successful login.
  * @returns {JSX.Element} The login screen UI.
@@ -14,7 +14,7 @@ export const LoginScreen = ({ onLoginSuccess }) => {
   const [password, setPassword] = useState('');
   const [errorMsg, setErrorMsg] = useState('');
 
-  const handleLogin = () => {
+  const handleLogin = async () => {
     setErrorMsg('');
     const normalizedEmail = email.trim().toLowerCase();
     const normalizedPassword = password.trim();
@@ -24,15 +24,21 @@ export const LoginScreen = ({ onLoginSuccess }) => {
       return;
     }
 
-    const foundUser = usersData.find(
-      (user) => user.email.trim().toLowerCase() === normalizedEmail && user.password.trim() === normalizedPassword
-    );
+    try {
+      const usersData = await loadUsersData();
+      const foundUser = usersData.find(
+        (user) =>
+          user.email?.trim().toLowerCase() === normalizedEmail &&
+          user.password?.trim() === normalizedPassword
+      );
 
-    if (foundUser) {
-      // Clone to avoid accidental shared-reference mutations.
-      onLoginSuccess(JSON.parse(JSON.stringify(foundUser)));
-    } else {
-      setErrorMsg('Invalid email or password.');
+      if (foundUser) {
+        onLoginSuccess(JSON.parse(JSON.stringify(foundUser)));
+      } else {
+        setErrorMsg('Invalid email or password.');
+      }
+    } catch {
+      setErrorMsg('Unable to load account data. Please try again.');
     }
   };
 
