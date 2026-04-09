@@ -418,7 +418,7 @@ export default function App() {
                 </View>
               ))}
               {playerData.brawlers.length > 10 && (
-                <Text style={{ fontSize: 12, color: '#FF6B35', fontStyle: 'italic', marginTop: 8, textAlign: 'center' }}>+{playerData.brawlers.length - 10} autres...</Text>
+                <Text style={{ fontSize: 12, color: '#00ff00', fontStyle: 'italic', marginTop: 8, textAlign: 'center' }}>+{playerData.brawlers.length - 10} autres...</Text>
               )}
             </View>
           )}
@@ -572,7 +572,7 @@ export default function App() {
         <View style={styles.userBar}>
           <View style={styles.userIdentityCard}>
             <View style={styles.userIconWrap}>
-              <MaterialCommunityIcons name="account-circle" size={24} color="#FF6B35" />
+              <MaterialCommunityIcons name="account-circle" size={24} color="#00ff00" />
             </View>
             <View style={styles.userIdentityTextBlock}>
               <Text style={styles.userNameText}>{currentUser.prenom || 'Utilisateur'} {currentUser.nom || ''}</Text>
@@ -598,22 +598,22 @@ export default function App() {
         <Button
           title="Brawlers"
           onPress={() => setActiveTab('brawlers')}
-          color={activeTab === 'brawlers' ? '#FF6B35' : '#666'}
+          color={activeTab === 'brawlers' ? '#00ff00' : '#666'}
         />
         <Button
           title="Joueur"
           onPress={() => setActiveTab('player')}
-          color={activeTab === 'player' ? '#FF6B35' : '#666'}
+          color={activeTab === 'player' ? '#00ff00' : '#666'}
         />
         <Button
           title="Versus"
           onPress={() => setActiveTab('versus')}
-          color={activeTab === 'versus' ? '#FF6B35' : '#666'}
+          color={activeTab === 'versus' ? '#00ff00' : '#666'}
         />
         <Button
           title="Profil"
           onPress={() => setActiveTab('profile')}
-          color={activeTab === 'profile' ? '#FF6B35' : '#666'}
+          color={activeTab === 'profile' ? '#00ff00' : '#666'}
         />
       </View>
 
@@ -625,13 +625,13 @@ export default function App() {
               title={loading && activeTab === 'brawlers' ? "Chargement..." : "Charger les Brawlers"}
               onPress={fetchBrawlers}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'brawlers' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Chargement des brawlers...</Text>
             </View>
           )}
@@ -676,13 +676,13 @@ export default function App() {
               title="Chercher"
               onPress={fetchPlayer}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'player' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Recherche du joueur...</Text>
             </View>
           )}
@@ -728,13 +728,13 @@ export default function App() {
               title={loading ? "Chargement..." : "Comparer"}
               onPress={fetchVersus}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'versus' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Chargement de la comparaison...</Text>
             </View>
           )}

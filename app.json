@@ -22,6 +22,10 @@
         "monochromeImage": "./assets/android-icon-monochrome.png"
       },
       "package": "com.anonymous.graciassupercell"
+    },
+    "web": {
+      "bundler": "metro",
+      "staticPath": "web"
     }
   }
 }

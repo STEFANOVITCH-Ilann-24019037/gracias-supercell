@@ -6436,7 +6436,8 @@ export const brawlersData = {
   "paging": {
     "cursors": {}
   }
-};\nexport const playersDataMap = {
+};
+nexport const playersDataMap = {
   "QLVP829R": {
     "tag": "#QLVP829R",
     "name": "Code: Gas",

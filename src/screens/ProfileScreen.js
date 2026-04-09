@@ -225,7 +225,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
       <View style={styles.header}>
         <Text style={styles.pageTitle}>Mon Profil</Text>
         <Pressable onPress={onLogout} style={styles.logoutButton}>
-          <MaterialCommunityIcons name="logout" size={20} color="#FF6B6B" />
+          <MaterialCommunityIcons name="logout" size={20} color="#ff0080" />
         </Pressable>
       </View>
 
@@ -458,7 +458,9 @@ const styles = StyleSheet.create({
   logoutButton: {
     padding: 8,
     borderRadius: 8,
-    backgroundColor: 'rgba(255, 107, 107, 0.1)',
+    backgroundColor: 'rgba(255, 0, 128, 0.2)',
+    borderWidth: 2,
+    borderColor: '#ff0080',
   },
   profileCard: {
     margin: 16,
@@ -601,21 +603,25 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#6366F1',
+    backgroundColor: '#000000',
     borderRadius: 10,
     paddingVertical: 12,
+    borderWidth: 3,
+    borderColor: '#00ff00',
   },
   qrButtonSecondary: {
     flexDirection: 'row',
     alignItems: 'center',
     justifyContent: 'center',
     gap: 8,
-    backgroundColor: '#334155',
+    backgroundColor: '#000000',
     borderRadius: 10,
     paddingVertical: 12,
+    borderWidth: 3,
+    borderColor: '#ff0080',
   },
   qrButtonText: {
-    color: '#FFFFFF',
+    color: '#00ff00',
     fontSize: 13,
     fontWeight: '700',
   },
@@ -699,7 +705,7 @@ const styles = StyleSheet.create({
   downloadButton: {
     marginHorizontal: 16,
     marginBottom: 12,
-    backgroundColor: '#6366F1',
+    backgroundColor: '#000000',
     paddingVertical: 14,
     paddingHorizontal: 16,
     borderRadius: 8,
@@ -707,15 +713,18 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     gap: 8,
+    borderWidth: 3,
+    borderColor: '#00ff00',
   },
   downloadButtonPressed: {
-    backgroundColor: '#4F46E5',
+    backgroundColor: '#1a1a1a',
+    borderColor: '#ff0080',
   },
   downloadButtonDisabled: {
     opacity: 0.6,
   },
   downloadButtonText: {
-    color: '#FFFFFF',
+    color: '#00ff00',
     fontSize: 15,
     fontWeight: '600',
   },
