@@ -1,4 +1,32 @@
-import React, { useState, useRef } from 'react';
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: screens/ProfileScreen.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: screens/ProfileScreen.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import React, { useState, useRef } from 'react';
 import {
   View,
   Text,
@@ -79,7 +107,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
   /**
    * Renders the radar chart used to visualize player statistics.
    * @param {Object} props - Component props.
-   * @param {Array<Object>} props.data - Radar chart points.
+   * @param {Array&lt;Object>} props.data - Radar chart points.
    * @returns {JSX.Element} The radar chart UI.
    */
   const RadarChart = ({ data }) => {
@@ -122,11 +150,11 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
     });
 
     return (
-      <View style={styles.radarWrapper}>
-        <Svg width={size} height={size}>
-          <Circle cx={center} cy={center} r={10} fill="#00ff00" fillOpacity="0.9" />
+      &lt;View style={styles.radarWrapper}>
+        &lt;Svg width={size} height={size}>
+          &lt;Circle cx={center} cy={center} r={10} fill="#00ff00" fillOpacity="0.9" />
           {[0.33, 0.66, 1].map((ratio, index) => (
-            <Polygon
+            &lt;Polygon
               key={`ring-${index}`}
               points={ringPoints(ratio)}
               fill="none"
@@ -141,7 +169,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
             const x2 = center + radius * Math.cos(angle);
             const y2 = center + radius * Math.sin(angle);
             return (
-              <Line
+              &lt;Line
                 key={`axis-${index}`}
                 x1={center}
                 y1={center}
@@ -153,7 +181,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
             );
           })}
 
-          <Polygon
+          &lt;Polygon
             points={filledPoints}
             fill="rgba(0, 255, 0, 0.28)"
             stroke="#00ff00"
@@ -165,30 +193,30 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
             const markerRadius = radius * Math.max(0.12, Math.min(1, item.value / item.max));
             const x = center + markerRadius * Math.cos(angle);
             const y = center + markerRadius * Math.sin(angle);
-            return <Circle key={`marker-${index}`} cx={x} cy={y} r={3.5} fill="#FFFFFF" />;
+            return &lt;Circle key={`marker-${index}`} cx={x} cy={y} r={3.5} fill="#FFFFFF" />;
           })}
 
           {labelPositions.map((pos, index) => (
-            <SvgText
+            &lt;SvgText
               key={`label-${index}`}
               x={pos.x}
               y={pos.y}
               fill="#CBD5E1"
               fontSize="10"
               fontWeight="600"
-              textAnchor={pos.angle > -Math.PI / 2 && pos.angle < Math.PI / 2 ? 'start' : pos.angle === -Math.PI / 2 ? 'middle' : 'end'}
+              textAnchor={pos.angle > -Math.PI / 2 &amp;&amp; pos.angle &lt; Math.PI / 2 ? 'start' : pos.angle === -Math.PI / 2 ? 'middle' : 'end'}
             >
               {pos.label}
-            </SvgText>
+            &lt;/SvgText>
           ))}
-        </Svg>
-      </View>
+        &lt;/Svg>
+      &lt;/View>
     );
   };
 
   /**
    * Captures the stats card as a PNG image and shares it through the OS share sheet.
-   * @returns {Promise<void>} A promise that resolves when the export flow completes.
+   * @returns {Promise&lt;void>} A promise that resolves when the export flow completes.
    */
   const downloadStatsAsPng = async () => {
     try {
@@ -237,214 +265,214 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
   };
 
   return (
-      <ScrollView style={styles.container}>
-          <View style={styles.header}>
-              <Text style={styles.pageTitle}>Mon Profil</Text>
-          </View>
+      &lt;ScrollView style={styles.container}>
+          &lt;View style={styles.header}>
+              &lt;Text style={styles.pageTitle}>Mon Profil&lt;/Text>
+          &lt;/View>
 
-      <View ref={statsCardRef} style={styles.profileCard} collapsable={false}>
-        <View style={styles.avatarContainer}>
-          <MaterialCommunityIcons name="account-circle" size={100} color="#00ff00" />
-        </View>
+      &lt;View ref={statsCardRef} style={styles.profileCard} collapsable={false}>
+        &lt;View style={styles.avatarContainer}>
+          &lt;MaterialCommunityIcons name="account-circle" size={100} color="#00ff00" />
+        &lt;/View>
 
-        <View style={styles.userSection}>
-          <Text style={styles.fullName}>
+        &lt;View style={styles.userSection}>
+          &lt;Text style={styles.fullName}>
             {currentUser.prenom} {currentUser.nom}
-          </Text>
-          <Text style={styles.subtitle}>
+          &lt;/Text>
+          &lt;Text style={styles.subtitle}>
             {playerStats.name || 'Joueur Brawl Stars'}
-          </Text>
-          <View style={styles.tagBadge}>
-            <MaterialCommunityIcons name="tag-outline" size={12} color="#FFD8CC" />
-            <Text style={styles.tagBadgeText}>{currentUser.player_tag}</Text>
-          </View>
-        </View>
+          &lt;/Text>
+          &lt;View style={styles.tagBadge}>
+            &lt;MaterialCommunityIcons name="tag-outline" size={12} color="#FFD8CC" />
+            &lt;Text style={styles.tagBadgeText}>{currentUser.player_tag}&lt;/Text>
+          &lt;/View>
+        &lt;/View>
 
-        <View style={styles.infoSection}>
-          <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="email" size={16} color="#00ff00" />
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>Email</Text>
-              <Text style={styles.infoValue}>{currentUser.email}</Text>
-            </View>
-          </View>
+        &lt;View style={styles.infoSection}>
+          &lt;View style={styles.infoRow}>
+            &lt;MaterialCommunityIcons name="email" size={16} color="#00ff00" />
+            &lt;View style={styles.infoContent}>
+              &lt;Text style={styles.infoLabel}>Email&lt;/Text>
+              &lt;Text style={styles.infoValue}>{currentUser.email}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
 
-          <View style={styles.divider} />
+          &lt;View style={styles.divider} />
 
-          <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="hashtag" size={16} color="#00ff00" />
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>ID Joueur</Text>
-              <Text style={styles.infoValue}>{currentUser.player_tag}</Text>
-            </View>
-          </View>
+          &lt;View style={styles.infoRow}>
+            &lt;MaterialCommunityIcons name="hashtag" size={16} color="#00ff00" />
+            &lt;View style={styles.infoContent}>
+              &lt;Text style={styles.infoLabel}>ID Joueur&lt;/Text>
+              &lt;Text style={styles.infoValue}>{currentUser.player_tag}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
 
-          <View style={styles.divider} />
+          &lt;View style={styles.divider} />
 
-          <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="shield-account" size={16} color="#00ff00" />
-            <View style={styles.infoContent}>
-              <Text style={styles.infoLabel}>ID Compte</Text>
-              <Text style={styles.infoValue}>#{currentUser.id}</Text>
-            </View>
-          </View>
-        </View>
+          &lt;View style={styles.infoRow}>
+            &lt;MaterialCommunityIcons name="shield-account" size={16} color="#00ff00" />
+            &lt;View style={styles.infoContent}>
+              &lt;Text style={styles.infoLabel}>ID Compte&lt;/Text>
+              &lt;Text style={styles.infoValue}>#{currentUser.id}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
+        &lt;/View>
 
-        <View style={styles.statsSection}>
-          <View style={styles.sectionHeaderRow}>
-            <MaterialCommunityIcons name="chart-box-outline" size={18} color="#00ff00" />
-            <Text style={styles.sectionTitle}>Statistiques</Text>
-          </View>
+        &lt;View style={styles.statsSection}>
+          &lt;View style={styles.sectionHeaderRow}>
+            &lt;MaterialCommunityIcons name="chart-box-outline" size={18} color="#00ff00" />
+            &lt;Text style={styles.sectionTitle}>Statistiques&lt;/Text>
+          &lt;/View>
 
-          <View style={styles.statsGrid}>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
+          &lt;View style={styles.statsGrid}>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>
                 {(playerStats.trophies || 0).toLocaleString('fr-FR')}
-              </Text>
-              <Text style={styles.statLabel}>Trophées</Text>
-            </View>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>{playerStats.expLevel || 0}</Text>
-              <Text style={styles.statLabel}>Niveau</Text>
-            </View>
+              &lt;/Text>
+              &lt;Text style={styles.statLabel}>Trophées&lt;/Text>
+            &lt;/View>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>{playerStats.expLevel || 0}&lt;/Text>
+              &lt;Text style={styles.statLabel}>Niveau&lt;/Text>
+            &lt;/View>
 
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>
                 {playerStats.totalPrestigeLevel || 0}
-              </Text>
-              <Text style={styles.statLabel}>Prestige</Text>
-            </View>
-          </View>
+              &lt;/Text>
+              &lt;Text style={styles.statLabel}>Prestige&lt;/Text>
+            &lt;/View>
+          &lt;/View>
 
-          <View style={styles.statsGrid}>
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
+          &lt;View style={styles.statsGrid}>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>
                 {(playerStats['3vs3Victories'] || 0).toLocaleString('fr-FR')}
-              </Text>
-              <Text style={styles.statLabel}>3v3</Text>
-            </View>
+              &lt;/Text>
+              &lt;Text style={styles.statLabel}>3v3&lt;/Text>
+            &lt;/View>
 
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>
                 {(playerStats.soloVictories || 0).toLocaleString('fr-FR')}
-              </Text>
-              <Text style={styles.statLabel}>Solo</Text>
-            </View>
+              &lt;/Text>
+              &lt;Text style={styles.statLabel}>Solo&lt;/Text>
+            &lt;/View>
 
-            <View style={styles.statCard}>
-              <Text style={styles.statNumber}>
+            &lt;View style={styles.statCard}>
+              &lt;Text style={styles.statNumber}>
                 {(playerStats.duoVictories || 0).toLocaleString('fr-FR')}
-              </Text>
-              <Text style={styles.statLabel}>Duo</Text>
-            </View>
-          </View>
+              &lt;/Text>
+              &lt;Text style={styles.statLabel}>Duo&lt;/Text>
+            &lt;/View>
+          &lt;/View>
 
-          <View style={styles.radarCard}>
-            <View style={styles.sectionHeaderRow}>
-              <MaterialCommunityIcons name="radar" size={18} color="#00ff00" />
-              <Text style={styles.sectionTitle}>Profil radar</Text>
-            </View>
-            <RadarChart data={chartData} />
-          </View>
-        </View>
+          &lt;View style={styles.radarCard}>
+            &lt;View style={styles.sectionHeaderRow}>
+              &lt;MaterialCommunityIcons name="radar" size={18} color="#00ff00" />
+              &lt;Text style={styles.sectionTitle}>Profil radar&lt;/Text>
+            &lt;/View>
+            &lt;RadarChart data={chartData} />
+          &lt;/View>
+        &lt;/View>
 
-        {playerStats.club && (
-          <View style={styles.clubSection}>
-            <View style={styles.sectionHeaderRow}>
-              <MaterialCommunityIcons name="home-group" size={18} color="#00ff00" />
-              <Text style={styles.sectionTitle}>Club</Text>
-            </View>
-            <View style={styles.clubCard}>
-              <Text style={styles.clubName}>{playerStats.club.name}</Text>
-              <Text style={styles.clubTag}>{playerStats.club.tag}</Text>
-            </View>
-          </View>
+        {playerStats.club &amp;&amp; (
+          &lt;View style={styles.clubSection}>
+            &lt;View style={styles.sectionHeaderRow}>
+              &lt;MaterialCommunityIcons name="home-group" size={18} color="#00ff00" />
+              &lt;Text style={styles.sectionTitle}>Club&lt;/Text>
+            &lt;/View>
+            &lt;View style={styles.clubCard}>
+              &lt;Text style={styles.clubName}>{playerStats.club.name}&lt;/Text>
+              &lt;Text style={styles.clubTag}>{playerStats.club.tag}&lt;/Text>
+            &lt;/View>
+          &lt;/View>
         )}
 
-        <View style={styles.qrActionSection}>
-          <View style={styles.sectionHeaderRow}>
-            <MaterialCommunityIcons name="qrcode" size={18} color="#00ff00" />
-            <Text style={styles.sectionTitle}>QR Code</Text>
-          </View>
+        &lt;View style={styles.qrActionSection}>
+          &lt;View style={styles.sectionHeaderRow}>
+            &lt;MaterialCommunityIcons name="qrcode" size={18} color="#00ff00" />
+            &lt;Text style={styles.sectionTitle}>QR Code&lt;/Text>
+          &lt;/View>
 
-          <View style={styles.qrActionRow}>
-            <Pressable style={styles.qrButton} onPress={() => setShowQrModal(true)}>
-              <MaterialCommunityIcons name="qrcode-scan" size={18} color="#FFFFFF" />
-              <Text style={styles.qrButtonText}>Afficher mon QR</Text>
-            </Pressable>
+          &lt;View style={styles.qrActionRow}>
+            &lt;Pressable style={styles.qrButton} onPress={() => setShowQrModal(true)}>
+              &lt;MaterialCommunityIcons name="qrcode-scan" size={18} color="#FFFFFF" />
+              &lt;Text style={styles.qrButtonText}>Afficher mon QR&lt;/Text>
+            &lt;/Pressable>
 
-            <Pressable style={styles.qrButtonSecondary} onPress={() => onOpenQrScanner?.()}>
-              <MaterialCommunityIcons name="camera-outline" size={18} color="#FFFFFF" />
-              <Text style={styles.qrButtonText}>Scanner un QR</Text>
-            </Pressable>
-          </View>
-        </View>
-      </View>
+            &lt;Pressable style={styles.qrButtonSecondary} onPress={() => onOpenQrScanner?.()}>
+              &lt;MaterialCommunityIcons name="camera-outline" size={18} color="#FFFFFF" />
+              &lt;Text style={styles.qrButtonText}>Scanner un QR&lt;/Text>
+            &lt;/Pressable>
+          &lt;/View>
+        &lt;/View>
+      &lt;/View>
 
-      <Pressable
+      &lt;Pressable
         onPress={downloadStatsAsPng}
         disabled={saving}
         style={({ pressed }) => [
           styles.downloadButton,
-          pressed && styles.downloadButtonPressed,
-          saving && styles.downloadButtonDisabled,
+          pressed &amp;&amp; styles.downloadButtonPressed,
+          saving &amp;&amp; styles.downloadButtonDisabled,
         ]}
       >
         {saving ? (
-          <>
-            <ActivityIndicator color="#FFFFFF" size="small" />
-            <Text style={styles.downloadButtonText}>Création PNG...</Text>
-          </>
+          &lt;>
+            &lt;ActivityIndicator color="#FFFFFF" size="small" />
+            &lt;Text style={styles.downloadButtonText}>Création PNG...&lt;/Text>
+          &lt;/>
         ) : (
-          <>
-            <MaterialCommunityIcons name="share-variant" size={20} color="#FFFFFF" />
-            <Text style={styles.downloadButtonText}>Partager en PNG</Text>
-          </>
+          &lt;>
+            &lt;MaterialCommunityIcons name="share-variant" size={20} color="#FFFFFF" />
+            &lt;Text style={styles.downloadButtonText}>Partager en PNG&lt;/Text>
+          &lt;/>
         )}
-      </Pressable>
+      &lt;/Pressable>
 
       {flashMessage ? (
-        <View style={styles.flashToast}>
-          <MaterialCommunityIcons name="check-circle-outline" size={18} color="#A7F3D0" />
-          <Text style={styles.flashMessage}>{flashMessage}</Text>
-        </View>
+        &lt;View style={styles.flashToast}>
+          &lt;MaterialCommunityIcons name="check-circle-outline" size={18} color="#A7F3D0" />
+          &lt;Text style={styles.flashMessage}>{flashMessage}&lt;/Text>
+        &lt;/View>
       ) : null}
 
-      <Text style={styles.hint}>
+      &lt;Text style={styles.hint}>
         Créer une image PNG à partager partout
-      </Text>
+      &lt;/Text>
 
-      <Modal
+      &lt;Modal
         visible={showQrModal}
         transparent
         animationType="fade"
         onRequestClose={() => setShowQrModal(false)}
       >
-        <View style={styles.modalBackdrop}>
-          <View style={styles.qrModalCard}>
-            <View style={styles.qrModalHeader}>
-              <Text style={styles.qrModalTitle}>Mon QR Code</Text>
-              <Pressable onPress={() => setShowQrModal(false)}>
-                <MaterialCommunityIcons name="close" size={22} color="#CBD5E1" />
-              </Pressable>
-            </View>
+        &lt;View style={styles.modalBackdrop}>
+          &lt;View style={styles.qrModalCard}>
+            &lt;View style={styles.qrModalHeader}>
+              &lt;Text style={styles.qrModalTitle}>Mon QR Code&lt;/Text>
+              &lt;Pressable onPress={() => setShowQrModal(false)}>
+                &lt;MaterialCommunityIcons name="close" size={22} color="#CBD5E1" />
+              &lt;/Pressable>
+            &lt;/View>
 
-            <View style={styles.qrCodeContainer}>
-              <QRCode value={currentUser.player_tag || ''} size={220} color="#FFFFFF" backgroundColor="#000000" />
-            </View>
+            &lt;View style={styles.qrCodeContainer}>
+              &lt;QRCode value={currentUser.player_tag || ''} size={220} color="#FFFFFF" backgroundColor="#000000" />
+            &lt;/View>
 
-            <View style={styles.qrTagPill}>
-              <Text style={styles.qrModalTag}>{currentUser.player_tag}</Text>
-            </View>
-            <Text style={styles.qrModalHint}>
+            &lt;View style={styles.qrTagPill}>
+              &lt;Text style={styles.qrModalTag}>{currentUser.player_tag}&lt;/Text>
+            &lt;/View>
+            &lt;Text style={styles.qrModalHint}>
               Scanne ce code pour remplir automatiquement le joueur 2 dans le mode Versus.
-            </Text>
-          </View>
-        </View>
-      </Modal>
+            &lt;/Text>
+          &lt;/View>
+        &lt;/View>
+      &lt;/Modal>
 
-      <View style={styles.spacer} />
-    </ScrollView>
+      &lt;View style={styles.spacer} />
+    &lt;/ScrollView>
   );
 };
 
@@ -780,3 +808,26 @@ const styles = StyleSheet.create({
 
 
 
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#BrawlerCard">BrawlerCard</a></li><li><a href="global.html#BrawlersScreen">BrawlersScreen</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#PlayerCard">PlayerCard</a></li><li><a href="global.html#PlayerSearchScreen">PlayerSearchScreen</a></li><li><a href="global.html#ProfileScreen">ProfileScreen</a></li><li><a href="global.html#VersusComparison">VersusComparison</a></li><li><a href="global.html#VersusScreen">VersusScreen</a></li><li><a href="global.html#getBrawlerImage">getBrawlerImage</a></li><li><a href="global.html#getPlayersData">getPlayersData</a></li><li><a href="global.html#loadPlayersData">loadPlayersData</a></li><li><a href="global.html#resetPlayersData">resetPlayersData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Apr 09 2026 14:41:37 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

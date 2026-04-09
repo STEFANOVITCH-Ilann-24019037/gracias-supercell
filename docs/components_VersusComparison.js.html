@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <title>JSDoc: Source: components/VersusComparison.js</title>
+
+    <script src="scripts/prettify/prettify.js"> </script>
+    <script src="scripts/prettify/lang-css.js"> </script>
+    <!--[if lt IE 9]>
+      <script src="//html5shiv.googlecode.com/svn/trunk/html5.js"></script>
+    <![endif]-->
+    <link type="text/css" rel="stylesheet" href="styles/prettify-tomorrow.css">
+    <link type="text/css" rel="stylesheet" href="styles/jsdoc-default.css">
+</head>
+
+<body>
+
+<div id="main">
+
+    <h1 class="page-title">Source: components/VersusComparison.js</h1>
+
+    
+
+
+
+    
+    <section>
+        <article>
+            <pre class="prettyprint source linenums"><code>import { Text, View } from 'react-native';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { styles } from '../../styles';
+
+/**
+ * Renders the versus comparison result between two players.
+ * @param {Object} props - Component props.
+ * @param {Object|null} props.versusPlayer1 - Left player data.
+ * @param {Object|null} props.versusPlayer2 - Right player data.
+ * @returns {JSX.Element|null} The versus comparison UI, or null when incomplete.
+ */
+export const VersusComparison = ({ versusPlayer1, versusPlayer2 }) => {
+  if (!versusPlayer1 || !versusPlayer2) {
+    return null;
+  }
+
+  const leftStats = {
+    trophies: versusPlayer1.trophies || 0,
+    maxTrophies: versusPlayer1.highestTrophies || 0,
+    level: versusPlayer1.expLevel || 0,
+    brawlers: versusPlayer1.brawlers?.length || 0,
+    prestigeTotal: versusPlayer1.totalPrestigeLevel || 0,
+    victories3v3: versusPlayer1['3vs3Victories'] || 0,
+    victoriesSolo: versusPlayer1.soloVictories || 0,
+    victoriesDuo: versusPlayer1.duoVictories || 0,
+  };
+
+  const rightStats = {
+    trophies: versusPlayer2.trophies || 0,
+    maxTrophies: versusPlayer2.highestTrophies || 0,
+    level: versusPlayer2.expLevel || 0,
+    brawlers: versusPlayer2.brawlers?.length || 0,
+    prestigeTotal: versusPlayer2.totalPrestigeLevel || 0,
+    victories3v3: versusPlayer2['3vs3Victories'] || 0,
+    victoriesSolo: versusPlayer2.soloVictories || 0,
+    victoriesDuo: versusPlayer2.duoVictories || 0,
+  };
+
+  /**
+   * Renders a single stat row with a visual winner highlight.
+   * @param {Object} props - Component props.
+   * @param {string} props.label - Stat label.
+   * @param {number} props.leftValue - Left player stat value.
+   * @param {number} props.rightValue - Right player stat value.
+   * @returns {JSX.Element} The comparison stat row.
+   */
+  const ComparisonStat = ({ label, leftValue, rightValue }) => {
+    const winner = leftValue > rightValue ? 1 : rightValue > leftValue ? 2 : 0;
+
+    return (
+      &lt;View style={styles.comparisonStat}>
+        &lt;View style={[styles.statColumn, winner === 1 &amp;&amp; { backgroundColor: '#4CAF50' }]}>
+          &lt;Text style={styles.comparisonValue}>{leftValue}&lt;/Text>
+        &lt;/View>
+        &lt;Text style={styles.comparisonLabel}>{label}&lt;/Text>
+        &lt;View style={[styles.statColumn, winner === 2 &amp;&amp; { backgroundColor: '#4CAF50' }]}>
+          &lt;Text style={styles.comparisonValue}>{rightValue}&lt;/Text>
+        &lt;/View>
+      &lt;/View>
+    );
+  };
+
+  /**
+   * Renders a compact bar comparison for the versus overview.
+   * @param {Object} props - Component props.
+   * @param {string} props.label - Graph label.
+   * @param {number} props.leftValue - Left player value.
+   * @param {number} props.rightValue - Right player value.
+   * @returns {JSX.Element} The mini graph row.
+   */
+  const MiniGraphRow = ({ label, leftValue, rightValue }) => {
+    const maxValue = Math.max(leftValue, rightValue, 1);
+    const leftWidth = `${Math.max(8, (leftValue / maxValue) * 100)}%`;
+    const rightWidth = `${Math.max(8, (rightValue / maxValue) * 100)}%`;
+
+    return (
+      &lt;View style={styles.quickGraphRow}>
+        &lt;Text style={styles.quickGraphLabel}>{label}&lt;/Text>
+        &lt;View style={styles.quickGraphBars}>
+          &lt;View style={styles.quickGraphBarWrap}>
+            &lt;View style={[styles.quickGraphBar, styles.quickGraphBarLeft]}>
+              &lt;View style={[styles.quickGraphBarFill, { width: leftWidth }]} />
+            &lt;/View>
+            &lt;Text style={styles.quickGraphBarValue}>{leftValue.toLocaleString('fr-FR')}&lt;/Text>
+          &lt;/View>
+
+          &lt;View style={styles.quickGraphBarWrap}>
+            &lt;View style={[styles.quickGraphBar, styles.quickGraphBarRight]}>
+              &lt;View style={[styles.quickGraphBarFill, styles.quickGraphBarFillRight, { width: rightWidth }]} />
+            &lt;/View>
+            &lt;Text style={styles.quickGraphBarValue}>{rightValue.toLocaleString('fr-FR')}&lt;/Text>
+          &lt;/View>
+        &lt;/View>
+      &lt;/View>
+    );
+  };
+
+  return (
+    &lt;View style={styles.versusResultContainer}>
+      &lt;View style={styles.versusContainer}>
+        &lt;View style={styles.versusHeaderRow}>
+          &lt;View style={styles.versusPlayerHeader}>
+            &lt;Text style={styles.versusPlayerName}>{versusPlayer1.name}&lt;/Text>
+            &lt;Text style={styles.versusPlayerTag}>{versusPlayer1.tag}&lt;/Text>
+          &lt;/View>
+          &lt;Text style={styles.versusVsText}>VS&lt;/Text>
+          &lt;View style={styles.versusPlayerHeader}>
+            &lt;Text style={styles.versusPlayerName}>{versusPlayer2.name}&lt;/Text>
+            &lt;Text style={styles.versusPlayerTag}>{versusPlayer2.tag}&lt;/Text>
+          &lt;/View>
+        &lt;/View>
+
+        &lt;View style={styles.comparisonSection}>
+          &lt;Text style={styles.sectionTitle}>Comparaison&lt;/Text>
+          &lt;ComparisonStat label="Trophées" leftValue={leftStats.trophies} rightValue={rightStats.trophies} />
+          &lt;ComparisonStat label="Max Trophées" leftValue={leftStats.maxTrophies} rightValue={rightStats.maxTrophies} />
+          &lt;ComparisonStat label="Niveau" leftValue={leftStats.level} rightValue={rightStats.level} />
+          &lt;ComparisonStat label="Brawlers" leftValue={leftStats.brawlers} rightValue={rightStats.brawlers} />
+          &lt;ComparisonStat label="Prestige Total" leftValue={leftStats.prestigeTotal} rightValue={rightStats.prestigeTotal} />
+          &lt;ComparisonStat label="Victoires 3v3" leftValue={leftStats.victories3v3} rightValue={rightStats.victories3v3} />
+          &lt;ComparisonStat label="Victoires Solo" leftValue={leftStats.victoriesSolo} rightValue={rightStats.victoriesSolo} />
+          &lt;ComparisonStat label="Victoires Duo" leftValue={leftStats.victoriesDuo} rightValue={rightStats.victoriesDuo} />
+        &lt;/View>
+
+        &lt;View style={styles.comparisonSection}>
+          &lt;Text style={styles.sectionTitle}>Top Brawlers&lt;/Text>
+          &lt;View style={styles.brawlerComparisonRow}>
+            &lt;View style={styles.brawlerComparisonColumn}>
+              &lt;Text style={styles.brawlerComparisonPlayerName}>{versusPlayer1.name}&lt;/Text>
+              {versusPlayer1.brawlers?.slice(0, 5).map((brawler, index) => (
+                &lt;View key={`${versusPlayer1.tag}-${brawler.name}-${index}`} style={styles.comparisonBrawlerItem}>
+                  &lt;Text style={styles.comparisonBrawlerName}>{brawler.name}&lt;/Text>
+                  &lt;Text style={styles.comparisonBrawlerStats}>{brawler.trophies} tr. • Lvl {brawler.power}&lt;/Text>
+                &lt;/View>
+              ))}
+            &lt;/View>
+
+            &lt;View style={styles.brawlerComparisonColumn}>
+              &lt;Text style={styles.brawlerComparisonPlayerName}>{versusPlayer2.name}&lt;/Text>
+              {versusPlayer2.brawlers?.slice(0, 5).map((brawler, index) => (
+                &lt;View key={`${versusPlayer2.tag}-${brawler.name}-${index}`} style={styles.comparisonBrawlerItem}>
+                  &lt;Text style={styles.comparisonBrawlerName}>{brawler.name}&lt;/Text>
+                  &lt;Text style={styles.comparisonBrawlerStats}>{brawler.trophies} tr. • Lvl {brawler.power}&lt;/Text>
+                &lt;/View>
+              ))}
+            &lt;/View>
+          &lt;/View>
+        &lt;/View>
+
+        &lt;View style={styles.quickGraphSection}>
+          &lt;View style={styles.sectionHeaderRow}>
+            &lt;MaterialCommunityIcons name="chart-bar" size={18} color="#A78BFA" />
+            &lt;Text style={styles.sectionTitle}>Graphique rapide&lt;/Text>
+          &lt;/View>
+
+          &lt;View style={styles.quickGraphCard}>
+            &lt;MiniGraphRow label="Trophées" leftValue={leftStats.trophies} rightValue={rightStats.trophies} />
+            &lt;MiniGraphRow label="Niveau" leftValue={leftStats.level} rightValue={rightStats.level} />
+            &lt;MiniGraphRow label="Prestige" leftValue={leftStats.prestigeTotal} rightValue={rightStats.prestigeTotal} />
+            &lt;MiniGraphRow label="3v3" leftValue={leftStats.victories3v3} rightValue={rightStats.victories3v3} />
+          &lt;/View>
+        &lt;/View>
+      &lt;/View>
+    &lt;/View>
+  );
+};
+</code></pre>
+        </article>
+    </section>
+
+
+
+
+</div>
+
+<nav>
+    <h2><a href="index.html">Home</a></h2><h3>Global</h3><ul><li><a href="global.html#BrawlerCard">BrawlerCard</a></li><li><a href="global.html#BrawlersScreen">BrawlersScreen</a></li><li><a href="global.html#LoginScreen">LoginScreen</a></li><li><a href="global.html#PlayerCard">PlayerCard</a></li><li><a href="global.html#PlayerSearchScreen">PlayerSearchScreen</a></li><li><a href="global.html#ProfileScreen">ProfileScreen</a></li><li><a href="global.html#VersusComparison">VersusComparison</a></li><li><a href="global.html#VersusScreen">VersusScreen</a></li><li><a href="global.html#getBrawlerImage">getBrawlerImage</a></li><li><a href="global.html#getPlayersData">getPlayersData</a></li><li><a href="global.html#loadPlayersData">loadPlayersData</a></li><li><a href="global.html#resetPlayersData">resetPlayersData</a></li></ul>
+</nav>
+
+<br class="clear">
+
+<footer>
+    Documentation generated by <a href="https://github.com/jsdoc/jsdoc">JSDoc 4.0.5</a> on Thu Apr 09 2026 14:41:37 GMT+0200 (heure d’été d’Europe centrale)
+</footer>
+
+<script> prettyPrint(); </script>
+<script src="scripts/linenumber.js"> </script>
+</body>
+</html>

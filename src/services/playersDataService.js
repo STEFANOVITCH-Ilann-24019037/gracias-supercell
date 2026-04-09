@@ -1,13 +1,13 @@
-// Service pour charger les données des joueurs
-// Importe directement depuis dataExport (fonctionne en Web et React Native)
+// Service for loading player data.
+// Imports directly from dataExport (works on Web and React Native).
 
 import { brawlersData, playersDataMap } from '../../data/api/dataExport';
 
 let playersData = null;
 
 /**
- * Charge les données des joueurs
- * @returns {Promise<Object>} Les données des joueurs
+ * Loads and caches the player data set used by the application.
+ * @returns {Promise<Object>} Resolves to the cached player data object.
  */
 export const loadPlayersData = async () => {
   if (playersData) {
@@ -15,7 +15,7 @@ export const loadPlayersData = async () => {
   }
 
   try {
-    // Les données sont déjà importées au-dessus
+    // The data is already imported above.
     playersData = {
       brawlers: brawlersData || { items: [] },
       player1: playersDataMap?.QLVP829R || {},
@@ -23,26 +23,26 @@ export const loadPlayersData = async () => {
       playersMap: playersDataMap || {},
     };
 
-    console.log('✅ Données des joueurs chargées avec succès');
+    console.log('Player data loaded successfully');
     console.log(`   Brawlers: ${brawlersData?.items?.length || 0}`);
     return playersData;
   } catch (error) {
-    console.error('❌ Erreur lors du chargement des données des joueurs:', error.message);
-    // Retourner des données vides en cas d'erreur
+    console.error('Error while loading player data:', error.message);
+    // Return empty data if loading fails.
     return { brawlers: { items: [] }, player1: {}, player2: {}, playersMap: {} };
   }
 };
 
 /**
- * Récupère les données déjà chargées
- * @returns {Object} Les données des joueurs ou null si pas encore chargées
+ * Returns the cached player data if it has already been loaded.
+ * @returns {Object|null} The cached player data, or null when unavailable.
  */
 export const getPlayersData = () => {
   return playersData;
 };
 
 /**
- * Réinitialise le cache des données
+ * Clears the in-memory player data cache.
  */
 export const resetPlayersData = () => {
   playersData = null;

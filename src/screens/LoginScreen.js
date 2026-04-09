@@ -5,8 +5,9 @@ import usersData from '../../data/account/users.json';
 
 /**
  * Screen component for local user authentication.
- * @param {Object} props
- * @param {Function} props.onLoginSuccess - Callback triggered after successful login
+ * @param {Object} props - Component props.
+ * @param {Function} props.onLoginSuccess - Callback invoked after a successful login.
+ * @returns {JSX.Element} The login screen UI.
  */
 export const LoginScreen = ({ onLoginSuccess }) => {
   const [email, setEmail] = useState('');
@@ -28,7 +29,7 @@ export const LoginScreen = ({ onLoginSuccess }) => {
     );
 
     if (foundUser) {
-      // Clone to prevent accidental shared-reference mutations.
+      // Clone to avoid accidental shared-reference mutations.
       onLoginSuccess(JSON.parse(JSON.stringify(foundUser)));
     } else {
       setErrorMsg('Invalid email or password.');
