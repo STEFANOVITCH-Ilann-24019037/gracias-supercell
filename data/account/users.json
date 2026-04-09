@@ -52,21 +52,18 @@
     "prenom": "Ilann",
     "email": "stefanovitch@supercell.com",
     "password": "password123",
-    "player_tag": "#QLVP829R",
+    "player_tag": "#RQPOQOQ",
     "playerStats": {
-      "name": "Code: Gas",
-      "trophies": 121503,
-      "highestTrophies": 160000,
-      "totalPrestigeLevel": 117,
-      "expLevel": 491,
-      "expPoints": 1222460,
-      "3vs3Victories": 110157,
-      "soloVictories": 1890,
-      "duoVictories": 3614,
-      "club": {
-        "name": "A Few Good Men",
-        "tag": "#208UU822P"
-      }
+      "name": "Lurgaar",
+      "trophies": 1073,
+      "highestTrophies": 1074,
+      "totalPrestigeLevel": 0,
+      "expLevel": 26,
+      "expPoints": 4138,
+      "3vs3Victories": 144,
+      "soloVictories": 36,
+      "duoVictories": 5,
+      "club": {}
     }
   }
 ]

@@ -55,7 +55,16 @@ const restoreUserSession = () => {
 
   try {
     const raw = window.sessionStorage.getItem(SESSION_USER_KEY);
-    return raw ? JSON.parse(raw) : null;
+    if (!raw) {
+      return null;
+    }
+
+    const parsed = JSON.parse(raw);
+    const matchedUser = usersData.find(
+      (user) => user.id === parsed?.id || user.email?.toLowerCase() === parsed?.email?.toLowerCase()
+    );
+
+    return matchedUser || parsed;
   } catch (error) {
     return null;
   }
