@@ -4,12 +4,12 @@
     "slug": "gracias-supercell",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/favicon/web-app-manifest-512x512.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash-icon.png",
+      "image": "./assets/favicon/web-app-manifest-512x512.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#E6F4FE"
     },
     "ios": {
       "supportsTablet": true
@@ -17,15 +17,14 @@
     "android": {
       "adaptiveIcon": {
         "backgroundColor": "#E6F4FE",
-        "foregroundImage": "./assets/android-icon-foreground.png",
-        "backgroundImage": "./assets/android-icon-background.png",
-        "monochromeImage": "./assets/android-icon-monochrome.png"
+        "foregroundImage": "./assets/favicon/web-app-manifest-512x512.png"
       },
       "package": "com.anonymous.graciassupercell"
     },
     "web": {
       "bundler": "metro",
-      "staticPath": "web"
+      "staticPath": "web",
+      "favicon": "./assets/favicon/favicon-96x96.png"
     }
   }
 }
