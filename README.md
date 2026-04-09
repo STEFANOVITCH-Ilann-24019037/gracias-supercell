@@ -1,64 +1,95 @@
-# Gracias Supercell
+<p align="center">
+  <img src="assets/favicon/favicon.svg" alt="Gracias Supercell logo" width="96" />
+</p>
 
-Application mobile React Native / Expo dédiée à la consultation et à la comparaison de profils Brawl Stars. Le projet propose une connexion locale, une page profil détaillée, un QR code de partage et un mode versus pour comparer deux joueurs.
+<h1 align="center">Gracias Supercell</h1>
 
-## Fonctionnalités
+<p align="center">
+  Application React Native / Expo pour consulter et comparer des profils Brawl Stars.
+</p>
 
-- Connexion locale avec validation email / mot de passe depuis un fichier JSON
-- Restauration de session côté navigateur via `sessionStorage`
-- Page profil complète avec statistiques, radar chart et informations de compte
-- Génération d'un QR code basé sur le tag joueur
-- Scan QR pour remplir automatiquement le joueur à comparer
-- Mode versus pour comparer deux profils
-- Consultation des brawlers avec leurs images et informations
-- Export du profil en PNG via la feuille de partage du système
+<p align="center">
+  <a href="https://stefanovitch-ilann-24019037.github.io/gracias-supercell/"><img alt="JSDoc" src="https://img.shields.io/badge/docs-jsdoc-0A0A0A?logo=javascript&logoColor=F7DF1E" /></a>
+  <img alt="Expo" src="https://img.shields.io/badge/expo-54-000020?logo=expo&logoColor=white" />
+  <img alt="React Native" src="https://img.shields.io/badge/react--native-0.81-20232A?logo=react&logoColor=61DAFB" />
+  <a href="LICENSE"><img alt="License MIT" src="https://img.shields.io/badge/license-MIT-green" /></a>
+</p>
 
-## Prérequis
+## Apercu
 
-- Node.js 18+ recommandé
-- npm
-- Expo Go ou un émulateur Android / iOS
+Gracias Supercell est une application orientee mobile qui permet de:
+
+- se connecter localement avec des comptes de test
+- afficher un profil joueur detaille
+- comparer deux joueurs en mode versus
+- generer et scanner un QR code de tag joueur
+- partager un export PNG des statistiques
+
+## Fonctionnalites
+
+- Auth locale basee sur un fichier JSON
+- Session restauree en web via `sessionStorage`
+- Profil utilisateur avec stats, club, radar chart et QR code
+- Comparaison versus entre deux comptes Brawl Stars
+- Consultation des brawlers et de leurs images
+- Export d'une carte de stats en PNG
+
+## Stack technique
+
+- React Native
+- Expo SDK 54
+- React 19
+- ESLint 9
+- JSDoc 4
 
 ## Installation
+
+Prerequis:
+
+- Node.js 18+
+- npm
+- Expo Go ou emulateur Android/iOS
+
+Installation:
 
 ```bash
 npm install
 ```
 
-## Lancement
+## Lancement rapide
 
 ```bash
 npm start
 ```
 
-Pour vider le cache Metro et repartir proprement :
+Reinitialiser le cache Metro:
 
 ```bash
 npx expo start -c
 ```
 
-## Scripts disponibles
+## Scripts utiles
 
-```bash
-npm start
-npm run android
-npm run ios
-npm run web
-npm run lint
-npm run generate-players
-npm run sync-players
-```
+| Script | Description |
+|---|---|
+| `npm start` | Lance Expo (apres generation des donnees) |
+| `npm run android` | Lance l'app sur Android |
+| `npm run ios` | Lance l'app sur iOS |
+| `npm run web` | Lance la version web |
+| `npm run web:clear` | Lance le web avec cache nettoye |
+| `npm run lint` | Verifie la qualite de code |
+| `npm run build-docs` | Genere la documentation JSDoc dans `docs/` |
+| `npm run generate-players` | Regenere la liste des joueurs |
+| `npm run sync-players` | Synchronise les donnees joueurs |
 
-## Documentation JSDoc
+## Documentation
 
-La documentation est générée dans le dossier `docs/` et déployée automatiquement sur GitHub Pages :
+- Documentation en ligne: [GitHub Pages JSDoc](https://stefanovitch-ilann-24019037.github.io/gracias-supercell/)
+- Documentation locale: [docs/index.html](docs/index.html)
 
-- [Documentation en ligne](https://stefanovitch-ilann-24019037.github.io/gracias-supercell/)
-- [Documentation locale](docs/index.html)
+Le deploiement est automatise via [deploy-docs.yml](.github/workflows/deploy-docs.yml).
 
 ## Comptes de test
-
-Utilise ces comptes pour te connecter dans l'application :
 
 | Email | Mot de passe |
 |---|---|
@@ -66,9 +97,7 @@ Utilise ces comptes pour te connecter dans l'application :
 | koliai@supercell.com | password123 |
 | stefanovitch@supercell.com | password123 |
 
-## Hashtags joueurs disponibles
-
-Ces tags peuvent être recherchés dans le mode joueur ou utilisés dans le mode versus :
+## Tags joueurs disponibles
 
 - `#QLVP829R`
 - `#VU02GGJQ`
@@ -76,65 +105,45 @@ Ces tags peuvent être recherchés dans le mode joueur ou utilisés dans le mode
 - `#2PVJU20JQ`
 - `#2UVJJPQLGP`
 
-## Utilisation
+## Flux d'utilisation
 
-### Connexion
-
-1. Ouvre l'application.
-2. Saisis un email et un mot de passe valides.
-3. Une fois connecté, accède aux différents onglets de l'application.
-
-### Page profil
-
-La page profil affiche :
-
-- le nom du joueur connecté
-- l'email et le tag joueur
-- les statistiques principales
-- un graphique radar de performance
-- le club si disponible
-- un QR code partageable
-- un bouton pour exporter le profil en PNG
-
-### QR code et scan
-
-- Le QR code encode le tag joueur du compte connecté.
-- Le bouton de scan ouvre la caméra.
-- Une fois le QR lu, le tag est injecté automatiquement dans le mode versus.
-
-### Mode versus
-
-1. Le joueur 1 est le compte connecté.
-2. Le joueur 2 est saisi manuellement ou récupéré par scan QR.
-3. L'application compare les statistiques et les top brawlers.
+1. Ouvrir l'application et se connecter.
+2. Consulter son profil et ses statistiques.
+3. Scanner ou partager un QR code pour recuperer un tag.
+4. Comparer les profils dans l'ecran Versus.
+5. Exporter une image PNG du profil si besoin.
 
 ## Structure du projet
 
 ```text
-App.js
-src/
-  components/
-  screens/
-  services/
-data/
-  account/
-  api/
-assets/
-  brawler/
-  favicon/
+.
+|- App.js
+|- src/
+|  |- components/
+|  |- screens/
+|  |- services/
+|- data/
+|  |- account/
+|  |- api/
+|- assets/
+|  |- brawler/
+|  |- favicon/
+|- docs/
 ```
 
-## Données locales
+## Donnees locales
 
-Le projet s'appuie sur des données locales pour fonctionner sans backend :
+- [data/account/users.json](data/account/users.json): comptes utilisateurs
+- [data/api](data/api): donnees joueurs et brawlers
+- [src/services/playersDataService.js](src/services/playersDataService.js): agregation des donnees
+- [src/services/brawlerImages.js](src/services/brawlerImages.js): mapping des images
 
-- `data/account/users.json` pour les comptes utilisateurs
-- `data/api/*.json` pour les profils joueurs et les brawlers
-- `src/services/playersDataService.js` pour centraliser les données
-- `src/services/brawlerImages.js` pour l'association des images brawlers
+## Limites connues
 
-## Remarques
+- Authentification locale uniquement (pas de backend de production).
+- Comptes et mots de passe de demonstration en clair.
+- Export PNG dependant de l'appareil ou emulateur.
 
-- La connexion est locale, ce n'est pas une authentification serveur.
-- Les mots de passe sont présents en clair dans les données de test pour simplifier le projet.
-- Le partage PNG dépend des capacités du téléphone ou de l'émulateur.
+## Licence
+
+Ce projet est distribue sous licence MIT. Voir [LICENSE](LICENSE).
