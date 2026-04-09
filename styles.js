@@ -108,6 +108,30 @@ export const styles = StyleSheet.create({
     borderBottomColor: '#00ff00',
     justifyContent: 'space-around',
   },
+  tabButton: {
+    flex: 1,
+    paddingVertical: 12,
+    paddingHorizontal: 8,
+    justifyContent: 'center',
+    alignItems: 'center',
+    borderBottomWidth: 4,
+    borderBottomColor: 'transparent',
+  },
+  tabButtonActive: {
+    borderBottomColor: '#00ff00',
+  },
+  tabButtonPressed: {
+    opacity: 0.7,
+  },
+  tabButtonText: {
+    fontSize: 13,
+    fontWeight: '700',
+    color: '#666666',
+    textAlign: 'center',
+  },
+  tabButtonTextActive: {
+    color: '#00ff00',
+  },
   tabContent: {
     flex: 1,
   },

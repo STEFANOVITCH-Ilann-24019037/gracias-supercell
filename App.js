@@ -378,26 +378,30 @@ export default function App() {
 
       {/* Tabs */}
       <View style={styles.tabsContainer}>
-        <Button
-          title="Brawlers"
+        <Pressable
           onPress={() => setActiveTab('brawlers')}
-          color={activeTab === 'brawlers' ? '#00ff00' : '#666'}
-        />
-        <Button
-          title="Joueur"
+          style={({ pressed }) => [styles.tabButton, activeTab === 'brawlers' && styles.tabButtonActive, pressed && styles.tabButtonPressed]}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'brawlers' && styles.tabButtonTextActive]}>Brawlers</Text>
+        </Pressable>
+        <Pressable
           onPress={() => setActiveTab('player')}
-          color={activeTab === 'player' ? '#00ff00' : '#666'}
-        />
-        <Button
-          title="Versus"
+          style={({ pressed }) => [styles.tabButton, activeTab === 'player' && styles.tabButtonActive, pressed && styles.tabButtonPressed]}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'player' && styles.tabButtonTextActive]}>Joueur</Text>
+        </Pressable>
+        <Pressable
           onPress={() => setActiveTab('versus')}
-          color={activeTab === 'versus' ? '#00ff00' : '#666'}
-        />
-        <Button
-          title="Profil"
+          style={({ pressed }) => [styles.tabButton, activeTab === 'versus' && styles.tabButtonActive, pressed && styles.tabButtonPressed]}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'versus' && styles.tabButtonTextActive]}>Versus</Text>
+        </Pressable>
+        <Pressable
           onPress={() => setActiveTab('profile')}
-          color={activeTab === 'profile' ? '#00ff00' : '#666'}
-        />
+          style={({ pressed }) => [styles.tabButton, activeTab === 'profile' && styles.tabButtonActive, pressed && styles.tabButtonPressed]}
+        >
+          <Text style={[styles.tabButtonText, activeTab === 'profile' && styles.tabButtonTextActive]}>Profil</Text>
+        </Pressable>
       </View>
 
       {/* Brawlers tab */}
