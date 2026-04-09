@@ -109,13 +109,13 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
     return (
       <View style={styles.radarWrapper}>
         <Svg width={size} height={size}>
-          <Circle cx={center} cy={center} r={10} fill="#6366F1" fillOpacity="0.9" />
+          <Circle cx={center} cy={center} r={10} fill="#00ff00" fillOpacity="0.9" />
           {[0.33, 0.66, 1].map((ratio, index) => (
             <Polygon
               key={`ring-${index}`}
               points={ringPoints(ratio)}
               fill="none"
-              stroke={index === 2 ? '#6366F1' : '#334155'}
+              stroke={index === 2 ? '#00ff00' : '#334155'}
               strokeWidth={index === 2 ? 1.5 : 1}
               strokeDasharray={index === 2 ? '0' : '4 4'}
             />
@@ -140,8 +140,8 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 
           <Polygon
             points={filledPoints}
-            fill="rgba(99, 102, 241, 0.28)"
-            stroke="#8B5CF6"
+            fill="rgba(0, 255, 0, 0.28)"
+            stroke="#00ff00"
             strokeWidth={2}
           />
 
@@ -221,17 +221,14 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
   };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.header}>
-        <Text style={styles.pageTitle}>Mon Profil</Text>
-        <Pressable onPress={onLogout} style={styles.logoutButton}>
-          <MaterialCommunityIcons name="logout" size={20} color="#ff0080" />
-        </Pressable>
-      </View>
+      <ScrollView style={styles.container}>
+          <View style={styles.header}>
+              <Text style={styles.pageTitle}>Mon Profil</Text>
+          </View>
 
       <View ref={statsCardRef} style={styles.profileCard} collapsable={false}>
         <View style={styles.avatarContainer}>
-          <MaterialCommunityIcons name="account-circle" size={100} color="#6366F1" />
+          <MaterialCommunityIcons name="account-circle" size={100} color="#00ff00" />
         </View>
 
         <View style={styles.userSection}>
@@ -249,7 +246,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 
         <View style={styles.infoSection}>
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="email" size={16} color="#6366F1" />
+            <MaterialCommunityIcons name="email" size={16} color="#00ff00" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>Email</Text>
               <Text style={styles.infoValue}>{currentUser.email}</Text>
@@ -259,7 +256,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
           <View style={styles.divider} />
 
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="hashtag" size={16} color="#6366F1" />
+            <MaterialCommunityIcons name="hashtag" size={16} color="#00ff00" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>ID Joueur</Text>
               <Text style={styles.infoValue}>{currentUser.player_tag}</Text>
@@ -269,7 +266,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
           <View style={styles.divider} />
 
           <View style={styles.infoRow}>
-            <MaterialCommunityIcons name="shield-account" size={16} color="#6366F1" />
+            <MaterialCommunityIcons name="shield-account" size={16} color="#00ff00" />
             <View style={styles.infoContent}>
               <Text style={styles.infoLabel}>ID Compte</Text>
               <Text style={styles.infoValue}>#{currentUser.id}</Text>
@@ -279,7 +276,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 
         <View style={styles.statsSection}>
           <View style={styles.sectionHeaderRow}>
-            <MaterialCommunityIcons name="chart-box-outline" size={18} color="#A78BFA" />
+            <MaterialCommunityIcons name="chart-box-outline" size={18} color="#00ff00" />
             <Text style={styles.sectionTitle}>Statistiques</Text>
           </View>
 
@@ -328,7 +325,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 
           <View style={styles.radarCard}>
             <View style={styles.sectionHeaderRow}>
-              <MaterialCommunityIcons name="radar" size={18} color="#A78BFA" />
+              <MaterialCommunityIcons name="radar" size={18} color="#00ff00" />
               <Text style={styles.sectionTitle}>Profil radar</Text>
             </View>
             <RadarChart data={chartData} />
@@ -338,7 +335,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
         {playerStats.club && (
           <View style={styles.clubSection}>
             <View style={styles.sectionHeaderRow}>
-              <MaterialCommunityIcons name="home-group" size={18} color="#A78BFA" />
+              <MaterialCommunityIcons name="home-group" size={18} color="#00ff00" />
               <Text style={styles.sectionTitle}>Club</Text>
             </View>
             <View style={styles.clubCard}>
@@ -350,7 +347,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 
         <View style={styles.qrActionSection}>
           <View style={styles.sectionHeaderRow}>
-            <MaterialCommunityIcons name="qrcode" size={18} color="#A78BFA" />
+            <MaterialCommunityIcons name="qrcode" size={18} color="#00ff00" />
             <Text style={styles.sectionTitle}>QR Code</Text>
           </View>
 
@@ -417,7 +414,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
             </View>
 
             <View style={styles.qrCodeContainer}>
-              <QRCode value={currentUser.player_tag || ''} size={220} color="#FFFFFF" backgroundColor="#0F172A" />
+              <QRCode value={currentUser.player_tag || ''} size={220} color="#FFFFFF" backgroundColor="#000000" />
             </View>
 
             <View style={styles.qrTagPill}>
@@ -438,7 +435,7 @@ export const ProfileScreen = ({ currentUser, onLogout, onOpenQrScanner }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#0F172A',
+    backgroundColor: '#000000',
   },
   header: {
     flexDirection: 'row',
@@ -446,7 +443,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     paddingHorizontal: 16,
     paddingVertical: 12,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#000000',
     borderBottomWidth: 1,
     borderBottomColor: '#334155',
   },
@@ -464,7 +461,7 @@ const styles = StyleSheet.create({
   },
   profileCard: {
     margin: 16,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#0a0a0a',
     borderRadius: 12,
     padding: 20,
     borderWidth: 1,
@@ -559,18 +556,18 @@ const styles = StyleSheet.create({
   },
   statCard: {
     flex: 1,
-    backgroundColor: 'rgba(99, 102, 241, 0.1)',
+    backgroundColor: 'rgba(0, 255, 0, 0.1)',
     borderRadius: 8,
     paddingVertical: 12,
     paddingHorizontal: 4,
     alignItems: 'center',
     borderWidth: 1,
-    borderColor: '#6366F1',
+    borderColor: '#00ff00',
   },
   statNumber: {
     fontSize: 16,
     fontWeight: 'bold',
-    color: '#6366F1',
+    color: '#00ff00',
     marginBottom: 4,
   },
   statLabel: {
@@ -580,7 +577,7 @@ const styles = StyleSheet.create({
   },
   radarCard: {
     marginTop: 14,
-    backgroundColor: 'rgba(15, 23, 42, 0.6)',
+    backgroundColor: 'rgba(0, 0, 0, 0.8)',
     borderRadius: 12,
     padding: 14,
     borderWidth: 1,
@@ -627,7 +624,7 @@ const styles = StyleSheet.create({
   },
   modalBackdrop: {
     flex: 1,
-    backgroundColor: 'rgba(15, 23, 42, 0.88)',
+    backgroundColor: 'rgba(0, 0, 0, 0.88)',
     justifyContent: 'center',
     alignItems: 'center',
     padding: 20,
@@ -635,7 +632,7 @@ const styles = StyleSheet.create({
   qrModalCard: {
     width: '100%',
     maxWidth: 340,
-    backgroundColor: '#1E293B',
+    backgroundColor: '#0a0a0a',
     borderRadius: 18,
     borderWidth: 1,
     borderColor: '#334155',
@@ -655,7 +652,7 @@ const styles = StyleSheet.create({
   qrCodeContainer: {
     alignItems: 'center',
     justifyContent: 'center',
-    backgroundColor: '#0F172A',
+    backgroundColor: '#000000',
     borderRadius: 14,
     padding: 12,
   },
@@ -670,7 +667,7 @@ const styles = StyleSheet.create({
     alignSelf: 'center',
     backgroundColor: '#334155',
     borderWidth: 1,
-    borderColor: 'rgba(167, 139, 250, 0.35)',
+    borderColor: 'rgba(0, 255, 0, 0.35)',
     borderRadius: 999,
     paddingHorizontal: 16,
     paddingVertical: 8,
@@ -686,11 +683,11 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   clubCard: {
-    backgroundColor: 'rgba(99, 102, 241, 0.05)',
+    backgroundColor: 'rgba(0, 255, 0, 0.05)',
     borderRadius: 8,
     padding: 12,
     borderLeftWidth: 4,
-    borderLeftColor: '#6366F1',
+    borderLeftColor: '#00ff00',
   },
   clubName: {
     fontSize: 13,
@@ -763,3 +760,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
 });
+
+
+
+
