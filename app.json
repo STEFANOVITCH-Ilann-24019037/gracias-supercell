@@ -24,7 +24,8 @@
       "package": "com.anonymous.graciassupercell"
     },
     "web": {
-      "favicon": "./assets/favicon/favicon-96x96.png"
+      "bundler": "metro",
+      "staticPath": "web"
     }
   }
 }

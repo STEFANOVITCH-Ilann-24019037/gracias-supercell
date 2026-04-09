@@ -1,17 +1,29 @@
 import { StatusBar } from 'expo-status-bar';
-import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable, Modal, Alert } from 'react-native';
+import { Text, View, Button, ScrollView, FlatList, ActivityIndicator, TextInput, Pressable, Modal, Alert, Image } from 'react-native';
 import { useEffect, useState } from 'react';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { styles } from './styles';
 import { CameraView, useCameraPermissions } from 'expo-camera';
-import usersData from './data/account/users.json';
-
-// Importer les données JSON locales
-import apiBrawlers from './data/api/apibrawlers.json';
-import playersList from './data/api/playersList';
+import { getBrawlerImage } from './src/services/brawlerImages';
+import { loadPlayersData, getPlayersData } from './src/services/playersDataService';
 import { LoginScreen } from './src/screens/LoginScreen';
 import { ProfileScreen } from './src/screens/ProfileScreen';
+import apiPlayer1 from './data/api/apiQLVP829Rplayer.json';
+import apiPlayer2 from './data/api/apiVU02GGJQplayer.json';
+import apiRQPOQOQplayer from './data/api/apiRQPOQOQplayer.json';
+import api2PVJU20JQplayer from './data/api/api2PVJU20JQplayer.json';
+import api2UVJJPQLGPplayer from './data/api/api2UVJJPQLGPplayer.json';
+import apilgoqjvr2uplayer from './data/api/apilgoqjvr2uplayer.json';
 
+// Créer la liste des joueurs pour recherche rapide
+const playersList = {
+  QLVP829R: apiPlayer1,
+  VU02GGJQ: apiPlayer2,
+  RQPOQOQ: apiRQPOQOQplayer,
+  '2PVJU20JQ': api2PVJU20JQplayer,
+  '2UVJJPQLGP': api2UVJJPQLGPplayer,
+  LGOQJVR2UP: apilgoqjvr2uplayer,
+};
 
 /**
  * Charge un joueur depuis la liste centralisée
@@ -105,6 +117,10 @@ export default function App() {
 
   const handleLoginSuccess = (user) => {
     setCurrentUser(user);
+    // Charger les données des joueurs au démarrage
+    loadPlayersData().catch(error => {
+      console.error('Erreur lors du chargement initial des données:', error);
+    });
     persistUserSession(user);
   };
 
@@ -186,9 +202,11 @@ export default function App() {
     setActiveTab('brawlers');
 
     try {
-      // Charger les données des brawlers depuis le JSON local
-      console.log('Brawlers chargés:', apiBrawlers.items?.length || 0);
-      setBrawlers(apiBrawlers.items || []);
+      // Charger les données des brawlers via le service
+      const data = getPlayersData() || (await loadPlayersData());
+      const brawlersData = data.brawlers?.items || [];
+      console.log('Brawlers chargés:', brawlersData.length);
+      setBrawlers(brawlersData);
     } catch (error) {
       console.error('Erreur:', error.message);
       alert('Erreur: ' + error.message);
@@ -262,8 +280,22 @@ export default function App() {
     }
   };
 
-  const renderBrawlerCard = ({ item }) => (
+  const renderBrawlerCard = ({ item }) => {
+    // Récupérer l'image du brawler à partir du service
+    const imagePath = getBrawlerImage(item.name);
+
+    return (
     <View style={styles.card}>
+      {imagePath && (
+        <View style={styles.cardImageContainer}>
+          <Image
+            source={imagePath}
+            style={styles.brawlerImage}
+            resizeMode="contain"
+          />
+        </View>
+      )}
+
       <View style={styles.cardHeader}>
         <Text style={styles.brawlerName}>{item.name}</Text>
         <Text style={styles.brawlerId}>#{item.id}</Text>
@@ -308,7 +340,8 @@ export default function App() {
         </View>
       )}
     </View>
-  );
+    );
+  };
 
   const renderPlayerCard = () => {
     if (!playerData) return null;
@@ -394,7 +427,7 @@ export default function App() {
                 </View>
               ))}
               {playerData.brawlers.length > 10 && (
-                <Text style={{ fontSize: 12, color: '#FF6B35', fontStyle: 'italic', marginTop: 8, textAlign: 'center' }}>+{playerData.brawlers.length - 10} autres...</Text>
+                <Text style={{ fontSize: 12, color: '#00ff00', fontStyle: 'italic', marginTop: 8, textAlign: 'center' }}>+{playerData.brawlers.length - 10} autres...</Text>
               )}
             </View>
           )}
@@ -548,7 +581,7 @@ export default function App() {
         <View style={styles.userBar}>
           <View style={styles.userIdentityCard}>
             <View style={styles.userIconWrap}>
-              <MaterialCommunityIcons name="account-circle" size={24} color="#FF6B35" />
+              <MaterialCommunityIcons name="account-circle" size={24} color="#00ff00" />
             </View>
             <View style={styles.userIdentityTextBlock}>
               <Text style={styles.userNameText}>{currentUser.prenom || 'Utilisateur'} {currentUser.nom || ''}</Text>
@@ -574,22 +607,22 @@ export default function App() {
         <Button
           title="Brawlers"
           onPress={() => setActiveTab('brawlers')}
-          color={activeTab === 'brawlers' ? '#FF6B35' : '#666'}
+          color={activeTab === 'brawlers' ? '#00ff00' : '#666'}
         />
         <Button
           title="Joueur"
           onPress={() => setActiveTab('player')}
-          color={activeTab === 'player' ? '#FF6B35' : '#666'}
+          color={activeTab === 'player' ? '#00ff00' : '#666'}
         />
         <Button
           title="Versus"
           onPress={() => setActiveTab('versus')}
-          color={activeTab === 'versus' ? '#FF6B35' : '#666'}
+          color={activeTab === 'versus' ? '#00ff00' : '#666'}
         />
         <Button
           title="Profil"
           onPress={() => setActiveTab('profile')}
-          color={activeTab === 'profile' ? '#FF6B35' : '#666'}
+          color={activeTab === 'profile' ? '#00ff00' : '#666'}
         />
       </View>
 
@@ -601,13 +634,13 @@ export default function App() {
               title={loading && activeTab === 'brawlers' ? "Chargement..." : "Charger les Brawlers"}
               onPress={fetchBrawlers}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'brawlers' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Chargement des brawlers...</Text>
             </View>
           )}
@@ -652,13 +685,13 @@ export default function App() {
               title="Chercher"
               onPress={fetchPlayer}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'player' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Recherche du joueur...</Text>
             </View>
           )}
@@ -704,13 +737,13 @@ export default function App() {
               title={loading ? "Chargement..." : "Comparer"}
               onPress={fetchVersus}
               disabled={loading}
-              color="#FF6B35"
+              color="#00ff00"
             />
           </View>
 
           {loading && activeTab === 'versus' && (
             <View style={styles.loadingContainer}>
-              <ActivityIndicator size="large" color="#FF6B35" />
+              <ActivityIndicator size="large" color="#00ff00" />
               <Text style={styles.loadingText}>Chargement de la comparaison...</Text>
             </View>
           )}

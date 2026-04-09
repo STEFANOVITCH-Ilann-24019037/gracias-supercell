@@ -62,7 +62,7 @@ export const LoginScreen = ({ onLoginSuccess }) => {
       {errorMsg ? <Text style={styles.errorText}>{errorMsg}</Text> : null}
 
       <View style={styles.buttonContainer}>
-        <Button title="Login" onPress={handleLogin} color="#FF6B35" />
+        <Button title="Login" onPress={handleLogin} color="#00ff00" />
       </View>
     </View>
   );
@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 32,
     fontWeight: 'bold',
-    color: '#FF6B35',
+    color: '#00ff00',
     textAlign: 'center',
     marginBottom: 5,
   },
